@@ -4,11 +4,13 @@ plugins {
 }
 
 val composeVersion by extra ("1.0.4")
+val coilVersion by extra ("1.4.0")
 
 dependencies {
     implementation(project(":shared"))
 
-    implementation("io.coil-kt:coil-compose:1.4.0")
+    implementation("io.coil-kt:coil-compose:$coilVersion")
+    implementation("io.coil-kt:coil-gif:$coilVersion")
 
     // Compose
     implementation("androidx.activity:activity-compose:1.3.1")
