@@ -8,24 +8,39 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.rememberImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
+import eu.rajniak.cat.CatsViewModel
 import eu.rajniak.cat.android.R
-import eu.rajniak.cat.android.data.Cat
-import eu.rajniak.cat.android.data.FakeData
+import eu.rajniak.cat.android.ui.theme.CatViewerDemoTheme
+import eu.rajniak.cat.data.Cat
+import eu.rajniak.cat.data.FakeData
+
+@Composable
+fun ViewerUI(viewModel: CatsViewModel) {
+    val cats by viewModel.cats.collectAsState()
+    ViewerUI(
+        cats = cats
+    )
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ViewerUI() {
+fun ViewerUI(
+    cats: List<Cat>
+) {
     LazyVerticalGrid(
         cells = GridCells.Adaptive(minSize = 128.dp)
     ) {
-        itemsIndexed(FakeData.cats) { _, cat ->
+        itemsIndexed(cats) { _, cat ->
             CatItem(cat)
         }
     }
@@ -54,4 +69,14 @@ fun CatItem(cat: Cat) {
         modifier = Modifier.size(128.dp),
         contentDescription = null // TODO: we can fetch something interesting about the image
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    CatViewerDemoTheme {
+        ViewerUI(
+            cats = FakeData.cats
+        )
+    }
 }

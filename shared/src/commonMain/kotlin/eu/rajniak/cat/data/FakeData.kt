@@ -1,4 +1,4 @@
-package eu.rajniak.cat.android.data
+package eu.rajniak.cat.data
 
 object FakeData {
 
