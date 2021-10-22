@@ -6,12 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import eu.rajniak.cat.Greeting
 import eu.rajniak.cat.android.ui.theme.CatViewerDemoTheme
+import eu.rajniak.cat.android.viewer.ViewerUI
 
 class MainActivity : ComponentActivity() {
 
@@ -24,22 +23,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    GreetingUI(Greeting().greeting())
+                    ViewerUI()
                 }
             }
         }
     }
 }
 
-@Composable
-fun GreetingUI(greeting: String) {
-    Text(text = greeting)
-}
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     CatViewerDemoTheme {
-        GreetingUI("Hello Android!")
+        ViewerUI()
     }
 }
