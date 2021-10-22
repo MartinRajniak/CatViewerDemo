@@ -1,10 +1,6 @@
-package eu.rajniak.cat
+package eu.rajniak.cat.utils
 
-import eu.rajniak.cat.data.Cat
-import eu.rajniak.cat.data.FakeData
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 @Suppress("EmptyDefaultConstructor")
 expect open class SharedViewModel() {

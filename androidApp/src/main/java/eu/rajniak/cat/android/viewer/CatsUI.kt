@@ -25,16 +25,16 @@ import eu.rajniak.cat.data.Cat
 import eu.rajniak.cat.data.FakeData
 
 @Composable
-fun ViewerUI(viewModel: CatsViewModel) {
-    val cats by viewModel.cats.collectAsState()
-    ViewerUI(
+fun CatsUI(viewModel: CatsViewModel) {
+    val cats by viewModel.cats.collectAsState(listOf())
+    CatsUI(
         cats = cats
     )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ViewerUI(
+fun CatsUI(
     cats: List<Cat>
 ) {
     LazyVerticalGrid(
@@ -75,7 +75,7 @@ fun CatItem(cat: Cat) {
 @Composable
 fun DefaultPreview() {
     CatViewerDemoTheme {
-        ViewerUI(
+        CatsUI(
             cats = FakeData.cats
         )
     }

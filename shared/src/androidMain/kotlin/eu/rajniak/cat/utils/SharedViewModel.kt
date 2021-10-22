@@ -1,4 +1,4 @@
-package eu.rajniak.cat
+package eu.rajniak.cat.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

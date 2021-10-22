@@ -1,6 +1,5 @@
-package eu.rajniak.cat
+package eu.rajniak.cat.utils
 
-import eu.rajniak.cat.utils.UIDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel

@@ -10,7 +10,7 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import eu.rajniak.cat.CatsViewModel
 import eu.rajniak.cat.android.ui.theme.CatViewerDemoTheme
-import eu.rajniak.cat.android.viewer.ViewerUI
+import eu.rajniak.cat.android.viewer.CatsUI
 
 class MainActivity : ComponentActivity() {
 
@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ViewerUI(viewModel)
+                    CatsUI(viewModel)
                 }
             }
         }
