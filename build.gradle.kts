@@ -1,3 +1,7 @@
+plugins {
+    id("com.diffplug.spotless") version "5.16.0"
+}
+
 buildscript {
     repositories {
         gradlePluginPortal()
@@ -17,6 +21,15 @@ allprojects {
     }
 }
 
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
+subprojects {
+    apply(plugin = "com.diffplug.spotless")
+    spotless {
+        kotlin {
+            target("**/*.kt")
+            targetExclude("$buildDir/**/*.kt")
+            targetExclude("bin/**/*.kt")
+
+            ktlint("0.42.1")
+        }
+    }
 }
