@@ -1,5 +1,6 @@
 package eu.rajniak.cat
 
+import eu.rajniak.cat.data.FakeData
 import kotlinx.coroutines.flow.first
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -33,5 +34,26 @@ class CatsViewModelTest {
         viewModel.onMimeTypeChecked(mimeTypeId, true)
 
         assertTrue { viewModel.mimeTypeSelection.first()[mimeTypeId] == true }
+    }
+
+    // TODO: once we use don't need FakeData anymore,
+    //  replace static list with list created in test,
+    //  so it is visible why items are filtered
+    @Test
+    fun testCategoryCatFilter() = runBlockingTest {
+        assertTrue(viewModel.cats.first().size == 5)
+
+        viewModel.onCategoryChecked(FakeData.CATEGORY_HATS.id, false)
+
+        assertTrue(viewModel.cats.first().size == 1)
+    }
+
+    @Test
+    fun testMimeTypeCatFilter() = runBlockingTest {
+        assertTrue(viewModel.cats.first().size == 5)
+
+        viewModel.onMimeTypeChecked(FakeData.MIME_TYPE_GIF.id, false)
+
+        assertTrue(viewModel.cats.first().size == 3)
     }
 }

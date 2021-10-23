@@ -163,6 +163,10 @@ private fun Filter(
     }
 }
 
+// TODO: since cat can have multiple categories,
+//  one category can be enabled while other disabled,
+//  current behaviour of filtering such item
+//  might not be intuitive (improve UI)
 @Composable
 private fun CategoryFilter(
     categories: List<Category>,
