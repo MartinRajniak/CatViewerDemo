@@ -6,6 +6,7 @@ plugins {
 }
 
 val lifecycleVersion by extra ("2.4.0-rc01")
+val coroutinesVersion by extra ("1.5.2-native-mt")
 
 kotlin {
     android()
@@ -26,13 +27,14 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2-native-mt") {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion") {
                     isForce = true
                 }
             }
         }
         val commonTest by getting {
             dependencies {
+                // TODO: might want to use JUnit with AssertJ instead (https://stackoverflow.com/a/63427057)
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
