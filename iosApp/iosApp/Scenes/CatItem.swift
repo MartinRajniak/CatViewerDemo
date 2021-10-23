@@ -18,6 +18,6 @@ struct CatItem: View {
 
 struct CatItem_Previews: PreviewProvider {
     static var previews: some View {
-        CatItem(cat: Cat(id: "1", url: "dummy.url"))
+        CatItem(cat: FakeData.shared.cats[0])
     }
 }

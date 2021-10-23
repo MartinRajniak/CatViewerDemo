@@ -9,8 +9,12 @@ val coilVersion by extra ("1.4.0")
 dependencies {
     implementation(project(":shared"))
 
+    // Coil
     implementation("io.coil-kt:coil-compose:$coilVersion")
     implementation("io.coil-kt:coil-gif:$coilVersion")
+
+    // Accompanist
+    implementation("com.google.accompanist:accompanist-insets-ui:0.19.0")
 
     // Compose
     implementation("androidx.activity:activity-compose:1.3.1")
