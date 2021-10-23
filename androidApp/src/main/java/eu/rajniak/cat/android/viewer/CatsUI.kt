@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Checkbox
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -47,18 +48,26 @@ import eu.rajniak.cat.android.ui.theme.CatViewerDemoTheme
 import eu.rajniak.cat.data.Cat
 import eu.rajniak.cat.data.Category
 import eu.rajniak.cat.data.FakeData
+import eu.rajniak.cat.data.MimeType
 
 @Composable
 fun CatsUI(viewModel: CatsViewModel) {
     val cats by viewModel.cats.collectAsState(listOf())
     val categories by viewModel.categories.collectAsState(listOf())
     val categorySelection by viewModel.categorySelection.collectAsState(mapOf())
+    val mimeTypes by viewModel.mimeTypes.collectAsState(listOf())
+    val mimeTypeSelection by viewModel.mimeTypeSelection.collectAsState(mapOf())
     CatsUI(
         cats = cats,
         categories = categories,
         categorySelection = categorySelection,
         onCategoryChecked = { categoryId, checked ->
             viewModel.onCategoryChecked(categoryId, checked)
+        },
+        mimeTypes = mimeTypes,
+        mimeTypeSelection = mimeTypeSelection,
+        onMimeTypeChecked = { mimeTypeId, checked ->
+            viewModel.onMimeTypeChecked(mimeTypeId, checked)
         }
     )
 }
@@ -68,7 +77,10 @@ fun CatsUI(
     cats: List<Cat>,
     categories: List<Category>,
     categorySelection: Map<Int, Boolean>,
-    onCategoryChecked: (Int, Boolean) -> Unit
+    onCategoryChecked: (Int, Boolean) -> Unit,
+    mimeTypes: List<MimeType>,
+    mimeTypeSelection: Map<Int, Boolean>,
+    onMimeTypeChecked: (Int, Boolean) -> Unit,
 ) {
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
         Scaffold(
@@ -92,10 +104,13 @@ fun CatsUI(
                         )
                     },
                     actions = {
-                        CategoryFilter(
+                        Filter(
                             categories = categories,
                             categorySelection = categorySelection,
-                            onCategoryChecked = onCategoryChecked
+                            onCategoryChecked = onCategoryChecked,
+                            mimeTypes = mimeTypes,
+                            mimeTypeSelection = mimeTypeSelection,
+                            onMimeTypeChecked = onMimeTypeChecked
                         )
                     },
                 )
@@ -116,10 +131,13 @@ fun CatsUI(
 }
 
 @Composable
-private fun CategoryFilter(
+private fun Filter(
     categories: List<Category>,
     categorySelection: Map<Int, Boolean>,
-    onCategoryChecked: (Int, Boolean) -> Unit
+    onCategoryChecked: (Int, Boolean) -> Unit,
+    mimeTypes: List<MimeType>,
+    mimeTypeSelection: Map<Int, Boolean>,
+    onMimeTypeChecked: (Int, Boolean) -> Unit,
 ) {
     DropdownMenu(
         icon = {
@@ -129,17 +147,58 @@ private fun CategoryFilter(
             )
         }
     ) {
-        categories.forEach { category ->
-            DropdownMenuItem {
-                Checkbox(
-                    checked = categorySelection[category.id] ?: true,
-                    onCheckedChange = { checked ->
-                        onCategoryChecked(category.id, checked)
-                    },
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(category.name)
-            }
+        CategoryFilter(
+            categories = categories,
+            categorySelection = categorySelection,
+            onCategoryChecked = onCategoryChecked
+        )
+
+        Divider()
+
+        MimeTypeFilter(
+            mimeTypes = mimeTypes,
+            mimeTypeSelection = mimeTypeSelection,
+            onMimeTypeChecked = onMimeTypeChecked
+        )
+    }
+}
+
+@Composable
+private fun CategoryFilter(
+    categories: List<Category>,
+    categorySelection: Map<Int, Boolean>,
+    onCategoryChecked: (Int, Boolean) -> Unit,
+) {
+    categories.forEach { category ->
+        DropdownMenuItem {
+            Checkbox(
+                checked = categorySelection[category.id] ?: true,
+                onCheckedChange = { checked ->
+                    onCategoryChecked(category.id, checked)
+                },
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(category.name)
+        }
+    }
+}
+
+@Composable
+private fun MimeTypeFilter(
+    mimeTypes: List<MimeType>,
+    mimeTypeSelection: Map<Int, Boolean>,
+    onMimeTypeChecked: (Int, Boolean) -> Unit,
+) {
+    mimeTypes.forEach { mimeType ->
+        DropdownMenuItem {
+            Checkbox(
+                checked = mimeTypeSelection[mimeType.id] ?: true,
+                onCheckedChange = { checked ->
+                    onMimeTypeChecked(mimeType.id, checked)
+                },
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(mimeType.name)
         }
     }
 }
@@ -192,7 +251,10 @@ fun DefaultPreview() {
             cats = FakeData.cats,
             categories = FakeData.categories,
             categorySelection = mapOf(),
-            onCategoryChecked = { _, _ -> }
+            onCategoryChecked = { _, _ -> },
+            mimeTypes = FakeData.mimeTypes,
+            mimeTypeSelection = mapOf(),
+            onMimeTypeChecked = { _, _ -> }
         )
     }
 }

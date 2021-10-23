@@ -16,6 +16,24 @@ object FakeData {
         name = "space"
     )
 
+    @JvmStatic
+    val MIME_TYPE_GIF = MimeType(
+        id = 1,
+        name = "gif"
+    )
+
+    @JvmStatic
+    val MIME_TYPE_JPG = MimeType(
+        id = 2,
+        name = "jpg"
+    )
+
+    @JvmStatic
+    val MIME_TYPE_PNG = MimeType(
+        id = 3,
+        name = "png"
+    )
+
     val cats = listOf(
         Cat(
             id = "1",
@@ -56,9 +74,12 @@ object FakeData {
 
     val categories = listOf(
         CATEGORY_HATS,
-        Category(
-            id = 2,
-            name = "space"
-        )
+        CATEGORY_SPACE
+    )
+
+    val mimeTypes = listOf(
+        MIME_TYPE_GIF,
+        MIME_TYPE_JPG,
+        MIME_TYPE_PNG
     )
 }
