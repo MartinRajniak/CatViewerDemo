@@ -7,8 +7,11 @@ import eu.rajniak.cat.data.MimeType
 import eu.rajniak.cat.utils.CommonFlow
 import eu.rajniak.cat.utils.SharedViewModel
 import eu.rajniak.cat.utils.asCommonFlow
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 
 class CatsViewModel : SharedViewModel() {
     private val _categories = MutableStateFlow(FakeData.categories)
@@ -49,6 +52,8 @@ class CatsViewModel : SharedViewModel() {
         }
             .asCommonFlow()
 
+    private var loadingJob: Job? = null
+
     fun onCategoryChecked(categoryId: Int, checked: Boolean) {
         val oldSelection = _categorySelection.value
         _categorySelection.value = oldSelection.plus(categoryId to checked)
@@ -57,5 +62,18 @@ class CatsViewModel : SharedViewModel() {
     fun onMimeTypeChecked(mimeTypeId: Int, checked: Boolean) {
         val oldSelection = _mimeTypeSelection.value
         _mimeTypeSelection.value = oldSelection.plus(mimeTypeId to checked)
+    }
+
+    fun onScrolledToTheEnd() {
+        if (loadingJob?.isActive == true) {
+            return
+        }
+        loadingJob = sharedScope.launch {
+            delay(2000L)
+
+            // fetch more items
+            val oldList = _cats.value
+            _cats.value = listOf(oldList, FakeData.cats).flatten()
+        }
     }
 }

@@ -11,9 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Checkbox
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -25,8 +28,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -49,6 +54,9 @@ import eu.rajniak.cat.data.Cat
 import eu.rajniak.cat.data.Category
 import eu.rajniak.cat.data.FakeData
 import eu.rajniak.cat.data.MimeType
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 
 @Composable
 fun CatsUI(viewModel: CatsViewModel) {
@@ -68,7 +76,8 @@ fun CatsUI(viewModel: CatsViewModel) {
         mimeTypeSelection = mimeTypeSelection,
         onMimeTypeChecked = { mimeTypeId, checked ->
             viewModel.onMimeTypeChecked(mimeTypeId, checked)
-        }
+        },
+        onScrolledToTheEnd = { viewModel.onScrolledToTheEnd() }
     )
 }
 
@@ -81,6 +90,7 @@ fun CatsUI(
     mimeTypes: List<MimeType>,
     mimeTypeSelection: Map<Int, Boolean>,
     onMimeTypeChecked: (Int, Boolean) -> Unit,
+    onScrolledToTheEnd: () -> Unit
 ) {
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
         Scaffold(
@@ -124,7 +134,10 @@ fun CatsUI(
             },
         ) { contentPadding ->
             Box(Modifier.padding(contentPadding)) {
-                CatsList(cats = cats)
+                CatsList(
+                    cats = cats,
+                    onScrolledToTheEnd = onScrolledToTheEnd
+                )
             }
         }
     }
@@ -210,17 +223,39 @@ private fun MimeTypeFilter(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CatsList(
-    cats: List<Cat>
+    cats: List<Cat>,
+    onScrolledToTheEnd: () -> Unit
 ) {
+    val listState = rememberLazyListState()
+
     LazyVerticalGrid(
+        state = listState,
         cells = GridCells.Adaptive(minSize = 128.dp)
     ) {
         // TODO: remove list multiplier once real data is used
         itemsIndexed(List(10) { cats }.flatten()) { _, cat ->
             CatItem(cat)
         }
+        item {
+            CircularProgressIndicator(
+                // TODO: specify size instead to make progress smaller
+                modifier = Modifier.padding(48.dp)
+            )
+        }
+    }
+
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.isScrolledToTheEnd() }
+            .distinctUntilChanged()
+            .filter { it == true }
+            .collect {
+                onScrolledToTheEnd()
+            }
     }
 }
+
+fun LazyListState.isScrolledToTheEnd() =
+    layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1
 
 @Composable
 fun CatItem(cat: Cat) {
@@ -258,7 +293,8 @@ fun DefaultPreview() {
             onCategoryChecked = { _, _ -> },
             mimeTypes = FakeData.mimeTypes,
             mimeTypeSelection = mapOf(),
-            onMimeTypeChecked = { _, _ -> }
+            onMimeTypeChecked = { _, _ -> },
+            onScrolledToTheEnd = { }
         )
     }
 }
