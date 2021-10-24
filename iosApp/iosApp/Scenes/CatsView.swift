@@ -13,12 +13,25 @@ struct CatsView: View {
                     ForEach(store.cats, id: \.id) { cat in
                         CatItem(cat: cat)
                     }
+                    if (store.hasNextPage) {
+                        loadingItem
+                    }
                 }
                   .padding(.horizontal, 16)
             }
         }.onAppear {
             store.fetch()
         }
+    }
+    
+    private var loadingItem: some View {
+        VStack {
+            ProgressView()
+        }
+        .frame(width: 96, height: 96)
+        .onAppear(perform: {
+            store.onScrolledToTheEnd()
+        })
     }
 }
 

@@ -4,6 +4,9 @@ import kotlin.jvm.JvmStatic
 
 object FakeData {
 
+    private const val IMAGE_URL_JPG = "https://cdn2.thecatapi.com/images/YEw66vQ9A.jpg"
+    private const val IMAGE_URL_GIF = "https://cdn2.thecatapi.com/images/497.gif"
+
     @JvmStatic
     val CATEGORY_HATS = Category(
         id = 1,
@@ -34,44 +37,6 @@ object FakeData {
         name = "png"
     )
 
-    val cats = listOf(
-        Cat(
-            id = "1",
-            url = "https://cdn2.thecatapi.com/images/YEw66vQ9A.jpg",
-            categories = listOf(
-                CATEGORY_HATS
-            )
-        ),
-        Cat(
-            id = "2",
-            url = "https://cdn2.thecatapi.com/images/497.gif",
-            categories = listOf(
-                CATEGORY_HATS, CATEGORY_SPACE
-            )
-        ),
-        Cat(
-            id = "3",
-            url = "https://cdn2.thecatapi.com/images/YEw66vQ9A.jpg",
-            categories = listOf(
-                CATEGORY_SPACE
-            )
-        ),
-        Cat(
-            id = "4",
-            url = "https://cdn2.thecatapi.com/images/497.gif",
-            categories = listOf(
-                CATEGORY_HATS, CATEGORY_SPACE
-            )
-        ),
-        Cat(
-            id = "5",
-            url = "https://cdn2.thecatapi.com/images/YEw66vQ9A.jpg",
-            categories = listOf(
-                CATEGORY_HATS
-            )
-        ),
-    )
-
     val categories = listOf(
         CATEGORY_HATS,
         CATEGORY_SPACE
@@ -82,4 +47,27 @@ object FakeData {
         MIME_TYPE_JPG,
         MIME_TYPE_PNG
     )
+
+    private val imageUrls = listOf(
+        IMAGE_URL_JPG,
+        IMAGE_URL_GIF
+    )
+
+    val cats = generateCats(50)
+
+    fun generateCats(size: Int): List<Cat> {
+        val result = mutableListOf<Cat>()
+        repeat(size) {
+            result.add(
+                Cat(
+                    url = imageUrls.random(),
+                    categories = listOfNotNull(
+                        listOf(CATEGORY_HATS, null).random(),
+                        listOf(CATEGORY_SPACE, null).random()
+                    )
+                )
+            )
+        }
+        return result
+    }
 }

@@ -5,6 +5,7 @@ class CatsStore: ObservableObject {
     private let viewModel = CatsViewModel()
     
     @Published var cats: [Cat] = []
+    @Published var hasNextPage: Bool = false
     
     func fetch() {
         viewModel.cats.watch { cats in
@@ -12,6 +13,11 @@ class CatsStore: ObservableObject {
                 return
             }
             self.cats = list
+            self.hasNextPage = true // FIXME: should check if there is more data
         }
+    }
+    
+    func onScrolledToTheEnd() {
+        viewModel.onScrolledToTheEnd()
     }
 }

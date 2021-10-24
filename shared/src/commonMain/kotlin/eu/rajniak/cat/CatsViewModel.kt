@@ -64,6 +64,7 @@ class CatsViewModel : SharedViewModel() {
         _mimeTypeSelection.value = oldSelection.plus(mimeTypeId to checked)
     }
 
+    // TODO: use multiplatform paging library instead (https://github.com/kuuuurt/multiplatform-paging)
     fun onScrolledToTheEnd() {
         if (loadingJob?.isActive == true) {
             return
@@ -73,7 +74,7 @@ class CatsViewModel : SharedViewModel() {
 
             // fetch more items
             val oldList = _cats.value
-            _cats.value = listOf(oldList, FakeData.cats).flatten()
+            _cats.value = listOf(oldList, FakeData.generateCats(50)).flatten()
         }
     }
 }

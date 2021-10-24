@@ -30,6 +30,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion") {
                     isForce = true
                 }
+                implementation("com.benasher44:uuid:0.3.1")
             }
         }
         val commonTest by getting {

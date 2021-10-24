@@ -232,8 +232,7 @@ fun CatsList(
         state = listState,
         cells = GridCells.Adaptive(minSize = 128.dp)
     ) {
-        // TODO: remove list multiplier once real data is used
-        itemsIndexed(List(10) { cats }.flatten()) { _, cat ->
+        itemsIndexed(cats) { _, cat ->
             CatItem(cat)
         }
         item {
@@ -244,6 +243,7 @@ fun CatsList(
         }
     }
 
+    // TODO: use pagination 3 library (once we have support from shared library)
     LaunchedEffect(listState) {
         snapshotFlow { listState.isScrolledToTheEnd() }
             .distinctUntilChanged()
