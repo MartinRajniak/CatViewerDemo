@@ -13,6 +13,7 @@
 		375300B4272312420029761B /* CatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375300B3272312420029761B /* CatItem.swift */; };
 		375300B7272335AD0029761B /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375300B6272335AD0029761B /* AsyncImage.swift */; };
 		375300BA272336540029761B /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375300B9272336540029761B /* ImageService.swift */; };
+		376951302725B906001B6E0D /* CatsFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3769512F2725B906001B6E0D /* CatsFilter.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +37,7 @@
 		375300B3272312420029761B /* CatItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatItem.swift; sourceTree = "<group>"; };
 		375300B6272335AD0029761B /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
 		375300B9272336540029761B /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
+		3769512F2725B906001B6E0D /* CatsFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatsFilter.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 				375300AE27230EA70029761B /* CatsView.swift */,
 				375300B1272310F80029761B /* CatsStore.swift */,
 				375300B3272312420029761B /* CatItem.swift */,
+				3769512F2725B906001B6E0D /* CatsFilter.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				375300B4272312420029761B /* CatItem.swift in Sources */,
 				375300B2272310F80029761B /* CatsStore.swift in Sources */,
+				376951302725B906001B6E0D /* CatsFilter.swift in Sources */,
 				375300B7272335AD0029761B /* AsyncImage.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				375300BA272336540029761B /* ImageService.swift in Sources */,

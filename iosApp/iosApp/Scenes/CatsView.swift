@@ -3,24 +3,44 @@ import SwiftUI
 struct CatsView: View {
     @StateObject var store = CatsStore()
     
+    @State var isFilterPresented = false
+    
     var columns: [GridItem] =
             [.init(.adaptive(minimum: 96, maximum: 128))]
     
     var body: some View {
-        VStack(spacing: 32) {
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: 2) {
-                    ForEach(store.cats, id: \.id) { cat in
-                        CatItem(cat: cat)
+        NavigationView {
+            VStack(spacing: 32) {
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 2) {
+                        ForEach(store.cats, id: \.id) { cat in
+                            CatItem(cat: cat)
+                        }
+                        if (store.hasNextPage) {
+                            loadingItem
+                        }
                     }
-                    if (store.hasNextPage) {
-                        loadingItem
-                    }
+                      .padding(.horizontal, 16)
                 }
-                  .padding(.horizontal, 16)
             }
-        }.onAppear {
-            store.fetch()
+            .onAppear {
+                store.start()
+            }
+            .navigationTitle("Cat Viewer Demo")
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: {
+                        isFilterPresented = true
+                    }, label: {
+                        Image(systemName: "slider.horizontal.3")
+                    })
+                }
+            }
+            .sheet(isPresented: $isFilterPresented, onDismiss: handleFilterChange) {
+                NavigationView {
+                    CatsFilter(store: store)
+                }
+            }
         }
     }
     
@@ -32,6 +52,10 @@ struct CatsView: View {
         .onAppear(perform: {
             store.onScrolledToTheEnd()
         })
+    }
+    
+    func handleFilterChange() {
+        
     }
 }
 
