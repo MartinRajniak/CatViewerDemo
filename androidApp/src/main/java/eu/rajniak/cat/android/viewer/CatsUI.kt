@@ -62,18 +62,18 @@ import kotlinx.coroutines.flow.filter
 fun CatsUI(viewModel: CatsViewModel) {
     val cats by viewModel.cats.collectAsState(listOf())
     val categories by viewModel.categories.collectAsState(listOf())
-    val categorySelection by viewModel.categorySelection.collectAsState(mapOf())
+    val disabledCategories by viewModel.disabledCategories.collectAsState(setOf())
     val mimeTypes by viewModel.mimeTypes.collectAsState(listOf())
-    val mimeTypeSelection by viewModel.mimeTypeSelection.collectAsState(mapOf())
+    val disabledMimeTypes by viewModel.disabledMimeTypes.collectAsState(setOf())
     CatsUI(
         cats = cats,
         categories = categories,
-        categorySelection = categorySelection,
+        disabledCategories = disabledCategories,
         onCategoryChecked = { categoryId, checked ->
             viewModel.onCategoryChecked(categoryId, checked)
         },
         mimeTypes = mimeTypes,
-        mimeTypeSelection = mimeTypeSelection,
+        disabledMimeTypes = disabledMimeTypes,
         onMimeTypeChecked = { mimeTypeId, checked ->
             viewModel.onMimeTypeChecked(mimeTypeId, checked)
         },
@@ -85,10 +85,10 @@ fun CatsUI(viewModel: CatsViewModel) {
 fun CatsUI(
     cats: List<Cat>,
     categories: List<Category>,
-    categorySelection: Map<Int, Boolean>,
+    disabledCategories: Set<Int>,
     onCategoryChecked: (Int, Boolean) -> Unit,
     mimeTypes: List<MimeType>,
-    mimeTypeSelection: Map<Int, Boolean>,
+    disabledMimeTypes: Set<Int>,
     onMimeTypeChecked: (Int, Boolean) -> Unit,
     onScrolledToTheEnd: () -> Unit
 ) {
@@ -116,10 +116,10 @@ fun CatsUI(
                     actions = {
                         Filter(
                             categories = categories,
-                            categorySelection = categorySelection,
+                            disabledCategories = disabledCategories,
                             onCategoryChecked = onCategoryChecked,
                             mimeTypes = mimeTypes,
-                            mimeTypeSelection = mimeTypeSelection,
+                            disabledMimeTypes = disabledMimeTypes,
                             onMimeTypeChecked = onMimeTypeChecked
                         )
                     },
@@ -146,10 +146,10 @@ fun CatsUI(
 @Composable
 private fun Filter(
     categories: List<Category>,
-    categorySelection: Map<Int, Boolean>,
+    disabledCategories: Set<Int>,
     onCategoryChecked: (Int, Boolean) -> Unit,
     mimeTypes: List<MimeType>,
-    mimeTypeSelection: Map<Int, Boolean>,
+    disabledMimeTypes: Set<Int>,
     onMimeTypeChecked: (Int, Boolean) -> Unit,
 ) {
     DropdownMenu(
@@ -162,7 +162,7 @@ private fun Filter(
     ) {
         CategoryFilter(
             categories = categories,
-            categorySelection = categorySelection,
+            disabledCategories = disabledCategories,
             onCategoryChecked = onCategoryChecked
         )
 
@@ -170,7 +170,7 @@ private fun Filter(
 
         MimeTypeFilter(
             mimeTypes = mimeTypes,
-            mimeTypeSelection = mimeTypeSelection,
+            disabledMimeTypes = disabledMimeTypes,
             onMimeTypeChecked = onMimeTypeChecked
         )
     }
@@ -183,13 +183,13 @@ private fun Filter(
 @Composable
 private fun CategoryFilter(
     categories: List<Category>,
-    categorySelection: Map<Int, Boolean>,
+    disabledCategories: Set<Int>,
     onCategoryChecked: (Int, Boolean) -> Unit,
 ) {
     categories.forEach { category ->
         DropdownMenuItem {
             Checkbox(
-                checked = categorySelection[category.id] ?: true,
+                checked = !disabledCategories.contains(category.id),
                 onCheckedChange = { checked ->
                     onCategoryChecked(category.id, checked)
                 },
@@ -203,13 +203,13 @@ private fun CategoryFilter(
 @Composable
 private fun MimeTypeFilter(
     mimeTypes: List<MimeType>,
-    mimeTypeSelection: Map<Int, Boolean>,
+    disabledMimeTypes: Set<Int>,
     onMimeTypeChecked: (Int, Boolean) -> Unit,
 ) {
     mimeTypes.forEach { mimeType ->
         DropdownMenuItem {
             Checkbox(
-                checked = mimeTypeSelection[mimeType.id] ?: true,
+                checked = !disabledMimeTypes.contains(mimeType.id),
                 onCheckedChange = { checked ->
                     onMimeTypeChecked(mimeType.id, checked)
                 },
@@ -289,10 +289,10 @@ fun DefaultPreview() {
         CatsUI(
             cats = FakeData.cats,
             categories = FakeData.categories,
-            categorySelection = mapOf(),
+            disabledCategories = setOf(),
             onCategoryChecked = { _, _ -> },
             mimeTypes = FakeData.mimeTypes,
-            mimeTypeSelection = mapOf(),
+            disabledMimeTypes = setOf(),
             onMimeTypeChecked = { _, _ -> },
             onScrolledToTheEnd = { }
         )

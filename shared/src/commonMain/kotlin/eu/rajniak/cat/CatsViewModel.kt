@@ -18,33 +18,33 @@ class CatsViewModel : SharedViewModel() {
     val categories: CommonFlow<List<Category>> = _categories.asCommonFlow()
 
     // TODO: persist to survive restart
-    private val _categorySelection = MutableStateFlow(emptyMap<Int, Boolean>())
-    val categorySelection: CommonFlow<Map<Int, Boolean>> = _categorySelection.asCommonFlow()
+    private val _disabledCategories = MutableStateFlow(emptySet<Int>())
+    val disabledCategories: CommonFlow<Set<Int>> = _disabledCategories.asCommonFlow()
 
     private val _mimeTypes = MutableStateFlow(FakeData.mimeTypes)
     val mimeTypes: CommonFlow<List<MimeType>> = _mimeTypes.asCommonFlow()
 
     // TODO: persist to survive restart
-    private val _mimeTypeSelection = MutableStateFlow(emptyMap<Int, Boolean>())
-    val mimeTypeSelection: CommonFlow<Map<Int, Boolean>> = _mimeTypeSelection.asCommonFlow()
+    private val _disabledMimeTypes = MutableStateFlow(emptySet<Int>())
+    val disabledMimeTypes: CommonFlow<Set<Int>> = _disabledMimeTypes.asCommonFlow()
 
     private val _cats = MutableStateFlow(FakeData.cats)
     val cats: CommonFlow<List<Cat>> =
         combine(
             _cats,
             mimeTypes,
-            categorySelection,
-            mimeTypeSelection
-        ) { cats, mimeTypes, categorySelection, mimeTypeSelection ->
+            disabledCategories,
+            disabledMimeTypes
+        ) { cats, mimeTypes, disabledCategories, disabledMimeTypes ->
             cats.filter { cat ->
                 cat.categories.forEach { category ->
-                    if (categorySelection[category.id] == false) {
+                    if (disabledCategories.contains(category.id)) {
                         return@filter false
                     }
                 }
                 mimeTypes.forEach { mimeType ->
                     if (cat.url.endsWith(mimeType.name)) {
-                        return@filter mimeTypeSelection[mimeType.id] ?: true
+                        return@filter !disabledMimeTypes.contains(mimeType.id)
                     }
                 }
                 true
@@ -55,13 +55,21 @@ class CatsViewModel : SharedViewModel() {
     private var loadingJob: Job? = null
 
     fun onCategoryChecked(categoryId: Int, checked: Boolean) {
-        val oldSelection = _categorySelection.value
-        _categorySelection.value = oldSelection.plus(categoryId to checked)
+        val oldSelection = _disabledCategories.value
+        _disabledCategories.value = if (checked) {
+            oldSelection.minus(categoryId)
+        } else {
+            oldSelection.plus(categoryId)
+        }
     }
 
     fun onMimeTypeChecked(mimeTypeId: Int, checked: Boolean) {
-        val oldSelection = _mimeTypeSelection.value
-        _mimeTypeSelection.value = oldSelection.plus(mimeTypeId to checked)
+        val oldSelection = _disabledMimeTypes.value
+        _disabledMimeTypes.value = if (checked) {
+            oldSelection.minus(mimeTypeId)
+        } else {
+            oldSelection.plus(mimeTypeId)
+        }
     }
 
     // TODO: use multiplatform paging library instead (https://github.com/kuuuurt/multiplatform-paging)
