@@ -229,14 +229,16 @@ fun CatsList(
         }
     }
 
-    // TODO: use pagination 3 library (once we have support from shared library)
-    LaunchedEffect(listState) {
-        snapshotFlow { listState.isScrolledToTheEnd() }
-            .distinctUntilChanged()
-            .filter { it == true }
-            .collect {
-                onScrolledToTheEnd()
-            }
+    if (cats.isNotEmpty()) {
+        // TODO: use pagination 3 library (once we have support from shared library)
+        LaunchedEffect(listState) {
+            snapshotFlow { listState.isScrolledToTheEnd() }
+                .distinctUntilChanged()
+                .filter { it == true }
+                .collect {
+                    onScrolledToTheEnd()
+                }
+        }
     }
 }
 

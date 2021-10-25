@@ -1,8 +1,13 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import java.util.Properties
+
 
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    kotlin("plugin.serialization") version "1.5.31"
+    id("com.codingfeline.buildkonfig")
 }
 
 val lifecycleVersion by extra ("2.4.0-rc01")
@@ -24,13 +29,20 @@ kotlin {
             }
         }
     }
+
+    val ktor_version = "1.6.4"
+
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion") {
                     isForce = true
                 }
+
                 implementation("com.benasher44:uuid:0.3.1")
+
+                implementation("io.ktor:ktor-client-core:$ktor_version")
+                implementation("io.ktor:ktor-client-serialization:$ktor_version")
             }
         }
         val commonTest by getting {
@@ -43,6 +55,8 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+
+                implementation("io.ktor:ktor-client-android:$ktor_version")
             }
         }
         val androidTest by getting {
@@ -51,7 +65,11 @@ kotlin {
                 implementation("junit:junit:4.13.2")
             }
         }
-        val iosMain by getting
+        val iosMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-ios:$ktor_version")
+            }
+        }
         val iosTest by getting
     }
 }
@@ -62,5 +80,17 @@ android {
     defaultConfig {
         minSdkVersion(23)
         targetSdkVersion(31)
+    }
+}
+
+buildkonfig {
+    packageName = "eu.rajniak.cat"
+
+    defaultConfigs {
+        buildConfigField(
+            type = STRING,
+            name = "api_key",
+            value = findProperty("catsApiKey") as String
+        )
     }
 }

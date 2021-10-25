@@ -19,35 +19,6 @@ object FakeData {
         name = "space"
     )
 
-    @JvmStatic
-    val MIME_TYPE_GIF = MimeType(
-        id = 1,
-        name = "gif"
-    )
-
-    @JvmStatic
-    val MIME_TYPE_JPG = MimeType(
-        id = 2,
-        name = "jpg"
-    )
-
-    @JvmStatic
-    val MIME_TYPE_PNG = MimeType(
-        id = 3,
-        name = "png"
-    )
-
-    val categories = listOf(
-        CATEGORY_HATS,
-        CATEGORY_SPACE
-    )
-
-    val mimeTypes = listOf(
-        MIME_TYPE_GIF,
-        MIME_TYPE_JPG,
-        MIME_TYPE_PNG
-    )
-
     private val imageUrls = listOf(
         IMAGE_URL_JPG,
         IMAGE_URL_GIF
@@ -61,7 +32,7 @@ object FakeData {
             result.add(
                 Cat(
                     url = imageUrls.random(),
-                    categories = listOf(CATEGORY_HATS, CATEGORY_SPACE, null)
+                    categories = listOf(CATEGORY_HATS, CATEGORY_SPACE, null, null)
                         .shuffled()
                         .take(2)
                         .filterNotNull()

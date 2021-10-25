@@ -2,22 +2,24 @@ package eu.rajniak.cat
 
 import eu.rajniak.cat.data.Cat
 import eu.rajniak.cat.data.CategoryModel
-import eu.rajniak.cat.data.FakeData
 import eu.rajniak.cat.data.MimeTypeModel
 import eu.rajniak.cat.utils.CommonFlow
 import eu.rajniak.cat.utils.SharedViewModel
 import eu.rajniak.cat.utils.asCommonFlow
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
-class CatsViewModel : SharedViewModel() {
+class CatsViewModel(
+    private val catsStore: CatsStore = CatViewerServiceLocator.catsStore
+) : SharedViewModel() {
     // TODO: persist to survive restart
     private val _disabledCategories = MutableStateFlow(emptySet<Int>())
 
-    private val _categories = MutableStateFlow(FakeData.categories)
+    // TODO: repository should return model classes already
+    private val _categories = catsStore.categories
     val categories: CommonFlow<List<CategoryModel>> =
         _categories.combine(_disabledCategories) { categories, disabledCategories ->
             categories.map { category ->
@@ -32,7 +34,8 @@ class CatsViewModel : SharedViewModel() {
     // TODO: persist to survive restart
     private val _disabledMimeTypes = MutableStateFlow(emptySet<Int>())
 
-    private val _mimeTypes = MutableStateFlow(FakeData.mimeTypes)
+    // TODO: repository should return model classes already
+    private val _mimeTypes = catsStore.mimeTypes
     val mimeTypes: CommonFlow<List<MimeTypeModel>> =
         _mimeTypes.combine(_disabledMimeTypes) { mimeTypes, disabledMimeTypes ->
             mimeTypes.map { mimeType ->
@@ -44,7 +47,7 @@ class CatsViewModel : SharedViewModel() {
             }
         }.asCommonFlow()
 
-    private val _cats = MutableStateFlow(FakeData.cats)
+    private val _cats = catsStore.cats
     val cats: CommonFlow<List<Cat>> =
         combine(
             _cats,
@@ -53,7 +56,7 @@ class CatsViewModel : SharedViewModel() {
         ) { cats, categories, mimeTypes ->
             cats.filter { cat ->
                 cat.categories.forEach { category ->
-                    if (categories.first { it.id == category.id }.enabled == false) {
+                    if (categories.firstOrNull { it.id == category.id }?.enabled == false) {
                         return@filter false
                     }
                 }
@@ -67,6 +70,12 @@ class CatsViewModel : SharedViewModel() {
         }.asCommonFlow()
 
     private var loadingJob: Job? = null
+
+    init {
+        sharedScope.launch(context = Dispatchers.Default) {
+            catsStore.start()
+        }
+    }
 
     fun onCategoryChecked(categoryId: Int, checked: Boolean) {
         val oldSelection = _disabledCategories.value
@@ -91,12 +100,8 @@ class CatsViewModel : SharedViewModel() {
         if (loadingJob?.isActive == true) {
             return
         }
-        loadingJob = sharedScope.launch {
-            delay(2000L)
-
-            // fetch more items
-            val oldList = _cats.value
-            _cats.value = listOf(oldList, FakeData.generateCats(50)).flatten()
+        loadingJob = sharedScope.launch(context = Dispatchers.Default) {
+            catsStore.fetchMoreData()
         }
     }
 }
