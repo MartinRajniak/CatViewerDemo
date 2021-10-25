@@ -61,10 +61,10 @@ object FakeData {
             result.add(
                 Cat(
                     url = imageUrls.random(),
-                    categories = listOfNotNull(
-                        listOf(CATEGORY_HATS, null).random(),
-                        listOf(CATEGORY_SPACE, null).random()
-                    )
+                    categories = listOf(CATEGORY_HATS, CATEGORY_SPACE, null)
+                        .shuffled()
+                        .take(2)
+                        .filterNotNull()
                 )
             )
         }

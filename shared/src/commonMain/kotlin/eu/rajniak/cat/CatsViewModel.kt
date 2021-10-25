@@ -1,9 +1,9 @@
 package eu.rajniak.cat
 
 import eu.rajniak.cat.data.Cat
-import eu.rajniak.cat.data.Category
+import eu.rajniak.cat.data.CategoryModel
 import eu.rajniak.cat.data.FakeData
-import eu.rajniak.cat.data.MimeType
+import eu.rajniak.cat.data.MimeTypeModel
 import eu.rajniak.cat.utils.CommonFlow
 import eu.rajniak.cat.utils.SharedViewModel
 import eu.rajniak.cat.utils.asCommonFlow
@@ -14,43 +14,57 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class CatsViewModel : SharedViewModel() {
-    private val _categories = MutableStateFlow(FakeData.categories)
-    val categories: CommonFlow<List<Category>> = _categories.asCommonFlow()
-
     // TODO: persist to survive restart
     private val _disabledCategories = MutableStateFlow(emptySet<Int>())
-    val disabledCategories: CommonFlow<Set<Int>> = _disabledCategories.asCommonFlow()
 
-    private val _mimeTypes = MutableStateFlow(FakeData.mimeTypes)
-    val mimeTypes: CommonFlow<List<MimeType>> = _mimeTypes.asCommonFlow()
+    private val _categories = MutableStateFlow(FakeData.categories)
+    val categories: CommonFlow<List<CategoryModel>> =
+        _categories.combine(_disabledCategories) { categories, disabledCategories ->
+            categories.map { category ->
+                CategoryModel(
+                    id = category.id,
+                    name = category.name,
+                    enabled = !disabledCategories.contains(category.id)
+                )
+            }
+        }.asCommonFlow()
 
     // TODO: persist to survive restart
     private val _disabledMimeTypes = MutableStateFlow(emptySet<Int>())
-    val disabledMimeTypes: CommonFlow<Set<Int>> = _disabledMimeTypes.asCommonFlow()
+
+    private val _mimeTypes = MutableStateFlow(FakeData.mimeTypes)
+    val mimeTypes: CommonFlow<List<MimeTypeModel>> =
+        _mimeTypes.combine(_disabledMimeTypes) { mimeTypes, disabledMimeTypes ->
+            mimeTypes.map { mimeType ->
+                MimeTypeModel(
+                    id = mimeType.id,
+                    name = mimeType.name,
+                    enabled = !disabledMimeTypes.contains(mimeType.id)
+                )
+            }
+        }.asCommonFlow()
 
     private val _cats = MutableStateFlow(FakeData.cats)
     val cats: CommonFlow<List<Cat>> =
         combine(
             _cats,
+            categories,
             mimeTypes,
-            disabledCategories,
-            disabledMimeTypes
-        ) { cats, mimeTypes, disabledCategories, disabledMimeTypes ->
+        ) { cats, categories, mimeTypes ->
             cats.filter { cat ->
                 cat.categories.forEach { category ->
-                    if (disabledCategories.contains(category.id)) {
+                    if (categories.first { it.id == category.id }.enabled == false) {
                         return@filter false
                     }
                 }
                 mimeTypes.forEach { mimeType ->
                     if (cat.url.endsWith(mimeType.name)) {
-                        return@filter !disabledMimeTypes.contains(mimeType.id)
+                        return@filter mimeType.enabled
                     }
                 }
                 true
             }
-        }
-            .asCommonFlow()
+        }.asCommonFlow()
 
     private var loadingJob: Job? = null
 

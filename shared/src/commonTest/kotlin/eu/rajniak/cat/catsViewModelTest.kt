@@ -1,12 +1,14 @@
 package eu.rajniak.cat
 
-import eu.rajniak.cat.data.FakeData
 import kotlinx.coroutines.flow.first
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
+// TODO: once we use don't need FakeData anymore,
+//  replace static list with list created in test,
+//  so it is visible why items are filtered
 class CatsViewModelTest {
 
     private lateinit var viewModel: CatsViewModel
@@ -18,27 +20,24 @@ class CatsViewModelTest {
 
     @Test
     fun testCategorySelectionChange() = runBlockingTest {
-        val categoryId = 42
-        assertFalse { viewModel.disabledCategories.first().contains(categoryId) }
+        val categoryId = 1
+        assertTrue { viewModel.categories.first()[0].enabled }
 
         viewModel.onCategoryChecked(categoryId, false)
 
-        assertTrue { viewModel.disabledCategories.first().contains(categoryId) }
+        assertFalse { viewModel.categories.first()[0].enabled }
     }
 
     @Test
     fun testMimeTypeSelectionChange() = runBlockingTest {
-        val mimeTypeId = 42
-        assertFalse { viewModel.disabledMimeTypes.first().contains(mimeTypeId) }
+        val mimeTypeId = 1
+        assertTrue { viewModel.mimeTypes.first()[0].enabled }
 
         viewModel.onMimeTypeChecked(mimeTypeId, false)
 
-        assertTrue { viewModel.disabledMimeTypes.first().contains(mimeTypeId) }
+        assertFalse { viewModel.mimeTypes.first()[0].enabled }
     }
 
-    // TODO: once we use don't need FakeData anymore,
-    //  replace static list with list created in test,
-    //  so it is visible why items are filtered
 //    @Test
 //    fun testCategoryCatFilter() = runBlockingTest {
 //        assertTrue(viewModel.cats.first().size == 5)
