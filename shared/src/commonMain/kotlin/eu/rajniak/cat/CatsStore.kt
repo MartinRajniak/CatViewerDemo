@@ -2,11 +2,9 @@ package eu.rajniak.cat
 
 import eu.rajniak.cat.data.Cat
 import eu.rajniak.cat.data.Category
-import eu.rajniak.cat.data.FakeData
 import eu.rajniak.cat.data.MimeType
 import eu.rajniak.cat.data.MimeTypesSource
 import eu.rajniak.cat.data.MimeTypesSourceImpl
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -31,16 +29,16 @@ class CatsStoreImpl(
     // so keeping it here in case they do :)
     override val mimeTypes = MutableStateFlow(mimeTypesSource.mimeTypes)
 
+    private var page = 1
+
     override suspend fun start() {
         categories.value = catsApi.fetchCategories()
-        cats.value = catsApi.fetchCats()
+        cats.value = catsApi.fetchCats(page)
     }
 
     override suspend fun fetchMoreData() {
-        delay(2000L)
-
-        // fetch more items
         val oldList = cats.value
-        cats.value = listOf(oldList, FakeData.generateCats(50)).flatten()
+        val newList = catsApi.fetchCats(++page)
+        cats.value = listOf(oldList, newList).flatten()
     }
 }

@@ -10,14 +10,18 @@ import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-// TODO: once we use don't need FakeData anymore,
-//  replace static list with list created in test,
-//  so it is visible why items are filtered
-class CatsViewModelTest {
+class CatsTest {
 
     companion object {
-        private const val CATEGORY_ID = 1
-        private const val MIME_TYPE_ID = 1
+        private val CATEGORY_HAT = Category(
+            id = 1,
+            name = "Hat"
+        )
+
+        private val MIME_TYPE_GIF = MimeType(
+            id = 1,
+            name = "gif"
+        )
     }
 
     private lateinit var catsApi: FakeCatsApi
@@ -27,10 +31,24 @@ class CatsViewModelTest {
     @BeforeTest
     fun setUp() {
         catsApi = FakeCatsApi()
-        catsApi.categories += Category(id = CATEGORY_ID, name = "Dummy")
+        catsApi.categories += CATEGORY_HAT
+        catsApi.cats[1] = listOf(
+            Cat(
+                url = "Dummy.gif",
+                categories = listOf(CATEGORY_HAT)
+            ),
+            Cat(
+                url = "Dummy.png"
+            )
+        )
+        catsApi.cats[2] = listOf(
+            Cat(
+                url = "Dummy.jpg"
+            )
+        )
 
         mimeTypesSource = FakeMimeTypesSource()
-        mimeTypesSource.mimeTypes += MimeType(id = MIME_TYPE_ID, name = "Dummy")
+        mimeTypesSource.mimeTypes += MIME_TYPE_GIF
 
         viewModel = CatsViewModel(
             catsStore = CatsStoreImpl(
@@ -44,7 +62,7 @@ class CatsViewModelTest {
     fun testCategorySelectionChange() = runBlockingTest {
         assertTrue { viewModel.categories.first()[0].enabled }
 
-        viewModel.onCategoryChecked(CATEGORY_ID, false)
+        viewModel.onCategoryChecked(CATEGORY_HAT.id, false)
 
         assertFalse { viewModel.categories.first()[0].enabled }
     }
@@ -53,36 +71,46 @@ class CatsViewModelTest {
     fun testMimeTypeSelectionChange() = runBlockingTest {
         assertTrue { viewModel.mimeTypes.first()[0].enabled }
 
-        viewModel.onMimeTypeChecked(MIME_TYPE_ID, false)
+        viewModel.onMimeTypeChecked(MIME_TYPE_GIF.id, false)
 
         assertFalse { viewModel.mimeTypes.first()[0].enabled }
     }
 
-//    @Test
-//    fun testCategoryCatFilter() = runBlockingTest {
-//        assertTrue(viewModel.cats.first().size == 5)
-//
-//        viewModel.onCategoryChecked(FakeData.CATEGORY_HATS.id, false)
-//
-//        assertTrue(viewModel.cats.first().size == 1)
-//    }
-//
-//    @Test
-//    fun testMimeTypeCatFilter() = runBlockingTest {
-//        assertTrue(viewModel.cats.first().size == 5)
-//
-//        viewModel.onMimeTypeChecked(FakeData.MIME_TYPE_GIF.id, false)
-//
-//        assertTrue(viewModel.cats.first().size == 3)
-//    }
+    @Test
+    fun testCategoryCatFilter() = runBlockingTest {
+        assertTrue(viewModel.cats.first().size == 2)
+
+        viewModel.onCategoryChecked(CATEGORY_HAT.id, false)
+
+        assertTrue(viewModel.cats.first().size == 1)
+    }
+
+    @Test
+    fun testMimeTypeCatFilter() = runBlockingTest {
+        assertTrue(viewModel.cats.first().size == 2)
+
+        viewModel.onMimeTypeChecked(MIME_TYPE_GIF.id, false)
+
+        assertTrue(viewModel.cats.first().size == 1)
+    }
+
+    @Test
+    fun testPagination() = runBlockingTest {
+        assertTrue(viewModel.cats.first().size == 2)
+
+        viewModel.onScrolledToTheEnd()
+
+        assertTrue(viewModel.cats.first().size == 3)
+    }
 }
 
 class FakeCatsApi : CatsApi {
 
-    val cats = mutableListOf<Cat>()
+    // key: page, value: Cat
+    val cats = mutableMapOf<Int, List<Cat>>()
     val categories = mutableListOf<Category>()
 
-    override suspend fun fetchCats() = cats
+    override suspend fun fetchCats(page: Int) = cats[page]!!
 
     override suspend fun fetchCategories() = categories
 }

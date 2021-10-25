@@ -26,7 +26,7 @@ object FakeData {
 
     val cats = generateCats(50)
 
-    fun generateCats(size: Int): List<Cat> {
+    private fun generateCats(size: Int): List<Cat> {
         val result = mutableListOf<Cat>()
         repeat(size) {
             result.add(

@@ -14,7 +14,7 @@ import io.ktor.http.Url
 import kotlinx.serialization.json.Json
 
 interface CatsApi {
-    suspend fun fetchCats(): List<Cat>
+    suspend fun fetchCats(page: Int): List<Cat>
     suspend fun fetchCategories(): List<Category>
 }
 
@@ -40,13 +40,16 @@ class CatsApiImpl : CatsApi {
         }
     }
 
-    override suspend fun fetchCats(): List<Cat> {
+    // TODO: find if there is a way how to tell that there are no more pages
+    override suspend fun fetchCats(page: Int): List<Cat> {
         return client.get {
             url(catsUrl.toString())
             headers {
                 append("x-api-key", BuildKonfig.api_key)
             }
             parameter("limit", 50)
+            parameter("page", page)
+            parameter("order", "ASC")
         }
     }
 
