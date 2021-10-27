@@ -128,6 +128,8 @@ class FakeMimeTypesSource : MimeTypesSource {
     override val mimeTypes = mutableListOf<MimeType>()
 }
 
+// TODO: if we fake settings instead, we can use real storage with this logic in it
+//  not needing to rewrite it here
 class FakeSettingsStorage : SettingsStorage {
 
     override val disabledCategories = MutableStateFlow(setOf<Int>())

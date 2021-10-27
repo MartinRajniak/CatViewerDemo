@@ -52,6 +52,8 @@ kotlin {
                 // TODO: might want to use JUnit with AssertJ instead (https://stackoverflow.com/a/63427057)
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+
+                implementation("com.russhwolf:multiplatform-settings-test:$settingsVersion")
             }
         }
         val androidMain by getting {

@@ -1,5 +1,6 @@
 package eu.rajniak.cat
 
+import com.russhwolf.settings.coroutines.FlowSettings
 import eu.rajniak.cat.utils.settings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -16,7 +17,9 @@ interface SettingsStorage {
     suspend fun changeMimeTypeState(mimeTypeId: Int, enabled: Boolean)
 }
 
-class SettingsStorageImpl : SettingsStorage {
+class SettingsStorageImpl(
+    private val settings: FlowSettings = settings()
+) : SettingsStorage {
 
     companion object {
 

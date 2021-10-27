@@ -11,11 +11,10 @@ private val Context.dataStore by preferencesDataStore(
     name = "settings"
 )
 
-actual val settings: FlowSettings by lazy {
+actual fun settings(): FlowSettings =
     DataStoreSettings(
         appContext?.dataStore ?: throw IllegalStateException("Context not initialized")
     )
-}
 
 internal class SettingsInitializer : Initializer<Context> {
     override fun create(context: Context): Context =
