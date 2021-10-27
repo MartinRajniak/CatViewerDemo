@@ -7,9 +7,12 @@ import eu.rajniak.cat.data.MimeTypesSource
 import kotlinx.coroutines.flow.first
 import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
+// TODO: switch to JAssert and JUnit for testing
+//  this doesn't provide useful info
 class CatsTest {
 
     companion object {
@@ -78,29 +81,29 @@ class CatsTest {
 
     @Test
     fun testCategoryCatFilter() = runBlockingTest {
-        assertTrue(viewModel.cats.first().size == 2)
+        assertEquals(2, viewModel.cats.first().size)
 
         viewModel.onCategoryChecked(CATEGORY_HAT.id, false)
 
-        assertTrue(viewModel.cats.first().size == 1)
+        assertEquals(1, viewModel.cats.first().size)
     }
 
     @Test
     fun testMimeTypeCatFilter() = runBlockingTest {
-        assertTrue(viewModel.cats.first().size == 2)
+        assertEquals(2, viewModel.cats.first().size)
 
         viewModel.onMimeTypeChecked(MIME_TYPE_GIF.id, false)
 
-        assertTrue(viewModel.cats.first().size == 1)
+        assertEquals(1, viewModel.cats.first().size)
     }
 
     @Test
     fun testPagination() = runBlockingTest {
-        assertTrue(viewModel.cats.first().size == 2)
+        assertEquals(2, viewModel.cats.first().size)
 
         viewModel.onScrolledToTheEnd()
 
-        assertTrue(viewModel.cats.first().size == 3)
+        assertEquals(3, viewModel.cats.first().size)
     }
 }
 
