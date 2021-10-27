@@ -19,17 +19,17 @@ interface CatsStore {
 
     suspend fun start()
     suspend fun fetchMoreData()
-    fun changeCategoryState(categoryId: Int, enabled: Boolean)
-    fun changeMimeTypeState(mimeTypeId: Int, enabled: Boolean)
+    suspend fun changeCategoryState(categoryId: Int, enabled: Boolean)
+    suspend fun changeMimeTypeState(mimeTypeId: Int, enabled: Boolean)
 }
 
 class CatsStoreImpl(
     private val catsApi: CatsApi = CatsApiImpl(),
-    private val mimeTypesSource: MimeTypesSource = MimeTypesSourceImpl
+    private val mimeTypesSource: MimeTypesSource = MimeTypesSourceImpl,
+    private val settingsStorage: SettingsStorage = SettingsStorageImpl()
 ) : CatsStore {
 
-    // TODO: persist to survive restart
-    private val _disabledCategories = MutableStateFlow(emptySet<Int>())
+    private val _disabledCategories: Flow<Set<Int>> = settingsStorage.disabledCategories
 
     private val _categories = MutableStateFlow(listOf<Category>())
     override val categories =
@@ -43,8 +43,7 @@ class CatsStoreImpl(
             }
         }
 
-    // TODO: persist to survive restart
-    private val _disabledMimeTypes = MutableStateFlow(emptySet<Int>())
+    private val _disabledMimeTypes: Flow<Set<Int>> = settingsStorage.disabledMimeTypes
 
     // It would be nice if CatsAPI provided available MimeTypes as well,
     // so keeping it here in case they do :)
@@ -76,21 +75,11 @@ class CatsStoreImpl(
         cats.value = listOf(oldList, newList).flatten()
     }
 
-    override fun changeCategoryState(categoryId: Int, enabled: Boolean) {
-        val oldSelection = _disabledCategories.value
-        _disabledCategories.value = if (enabled) {
-            oldSelection.minus(categoryId)
-        } else {
-            oldSelection.plus(categoryId)
-        }
+    override suspend fun changeCategoryState(categoryId: Int, enabled: Boolean) {
+        settingsStorage.changeCategoryState(categoryId, enabled)
     }
 
-    override fun changeMimeTypeState(mimeTypeId: Int, enabled: Boolean) {
-        val oldSelection = _disabledMimeTypes.value
-        _disabledMimeTypes.value = if (enabled) {
-            oldSelection.minus(mimeTypeId)
-        } else {
-            oldSelection.plus(mimeTypeId)
-        }
+    override suspend fun changeMimeTypeState(mimeTypeId: Int, enabled: Boolean) {
+        settingsStorage.changeMimeTypeState(mimeTypeId, enabled)
     }
 }

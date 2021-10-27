@@ -8,10 +8,11 @@ plugins {
     id("com.codingfeline.buildkonfig")
 }
 
-val lifecycleVersion by extra ("2.4.0-rc01")
-val coroutinesVersion by extra ("1.5.2-native-mt")
+val lifecycleVersion by extra("2.4.0-rc01")
+val coroutinesVersion by extra("1.5.2-native-mt")
 // TODO: move to stable - keeping eap to be able to build for M1 simulators
-val ktorVersion by extra ("2.0.0-eap-257")
+val ktorVersion by extra("2.0.0-eap-257")
+val settingsVersion by extra("0.8.1")
 
 kotlin {
     android()
@@ -42,6 +43,8 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
+                implementation("com.russhwolf:multiplatform-settings-coroutines-native-mt:$settingsVersion")
             }
         }
         val commonTest by getting {
@@ -56,6 +59,9 @@ kotlin {
                 implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 
                 implementation("io.ktor:ktor-client-android:$ktorVersion")
+
+                implementation("androidx.datastore:datastore-preferences:1.0.0")
+                implementation("androidx.startup:startup-runtime:1.1.0")
             }
         }
         val androidTest by getting {
@@ -92,4 +98,9 @@ buildkonfig {
             value = findProperty("catsApiKey") as String
         )
     }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.freeCompilerArgs += "-Xjvm-default=all"
 }

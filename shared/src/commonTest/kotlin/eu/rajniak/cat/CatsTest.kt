@@ -4,6 +4,7 @@ import eu.rajniak.cat.data.Cat
 import eu.rajniak.cat.data.Category
 import eu.rajniak.cat.data.MimeType
 import eu.rajniak.cat.data.MimeTypesSource
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -29,6 +30,7 @@ class CatsTest {
 
     private lateinit var catsApi: FakeCatsApi
     private lateinit var mimeTypesSource: FakeMimeTypesSource
+    private lateinit var settingsStorage: SettingsStorage
     private lateinit var viewModel: CatsViewModel
 
     @BeforeTest
@@ -53,10 +55,13 @@ class CatsTest {
         mimeTypesSource = FakeMimeTypesSource()
         mimeTypesSource.mimeTypes += MIME_TYPE_GIF
 
+        settingsStorage = FakeSettingsStorage()
+
         viewModel = CatsViewModel(
             catsStore = CatsStoreImpl(
                 catsApi = catsApi,
-                mimeTypesSource = mimeTypesSource
+                mimeTypesSource = mimeTypesSource,
+                settingsStorage = settingsStorage
             )
         )
     }
@@ -121,4 +126,28 @@ class FakeCatsApi : CatsApi {
 class FakeMimeTypesSource : MimeTypesSource {
 
     override val mimeTypes = mutableListOf<MimeType>()
+}
+
+class FakeSettingsStorage : SettingsStorage {
+
+    override val disabledCategories = MutableStateFlow(setOf<Int>())
+    override val disabledMimeTypes = MutableStateFlow(setOf<Int>())
+
+    override suspend fun changeCategoryState(categoryId: Int, enabled: Boolean) {
+        val oldValue = disabledCategories.value
+        disabledCategories.value = if (enabled) {
+            oldValue.minus(categoryId)
+        } else {
+            oldValue.plus(categoryId)
+        }
+    }
+
+    override suspend fun changeMimeTypeState(mimeTypeId: Int, enabled: Boolean) {
+        val oldValue = disabledMimeTypes.value
+        disabledMimeTypes.value = if (enabled) {
+            oldValue.minus(mimeTypeId)
+        } else {
+            oldValue.plus(mimeTypeId)
+        }
+    }
 }

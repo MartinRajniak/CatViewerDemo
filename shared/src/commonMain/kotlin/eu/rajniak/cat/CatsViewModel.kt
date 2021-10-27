@@ -54,11 +54,15 @@ class CatsViewModel(
     }
 
     fun onCategoryChecked(categoryId: Int, checked: Boolean) {
-        catsStore.changeCategoryState(categoryId, checked)
+        sharedScope.launch(context = Dispatchers.Default) {
+            catsStore.changeCategoryState(categoryId, checked)
+        }
     }
 
     fun onMimeTypeChecked(mimeTypeId: Int, checked: Boolean) {
-        catsStore.changeMimeTypeState(mimeTypeId, checked)
+        sharedScope.launch(context = Dispatchers.Default) {
+            catsStore.changeMimeTypeState(mimeTypeId, checked)
+        }
     }
 
     // TODO: use multiplatform paging library instead (https://github.com/kuuuurt/multiplatform-paging)
