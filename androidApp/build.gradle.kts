@@ -27,7 +27,15 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
 
     // UI Tests
+//    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
+//    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
+
+
+    androidTestImplementation( "androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 }
 
 android {
@@ -35,9 +43,11 @@ android {
     defaultConfig {
         applicationId = "eu.rajniak.cat.android"
         minSdkVersion(23)
-        targetSdkVersion(31)
+        targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
         compose = true
@@ -56,6 +66,14 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+        }
+    }
+    testOptions {
+        animationsDisabled = true
+    }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
 }

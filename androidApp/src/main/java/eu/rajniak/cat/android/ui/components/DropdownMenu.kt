@@ -7,6 +7,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 
 /**
  * Version of [androidx.compose.material.DropdownMenu] with icon.
@@ -18,7 +20,10 @@ fun DropdownMenu(
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
-    IconButton(onClick = { showMenu = true }) {
+    IconButton(
+        onClick = { showMenu = true },
+        modifier = Modifier.testTag("DropdownIconButton")
+    ) {
         icon()
     }
     DropdownMenu(

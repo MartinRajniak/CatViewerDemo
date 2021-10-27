@@ -34,7 +34,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
@@ -146,7 +149,7 @@ private fun Filter(
         icon = {
             Icon(
                 imageVector = Icons.Filled.FilterList,
-                contentDescription = "Filter",
+                contentDescription = "Filter"
             )
         }
     ) {
@@ -199,6 +202,7 @@ private fun MimeTypeFilter(
                 onCheckedChange = { checked ->
                     onMimeTypeChecked(mimeType.id, checked)
                 },
+                modifier = Modifier.testTag(mimeType.id.toString())
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(mimeType.name)
@@ -265,7 +269,10 @@ fun CatItem(cat: Cat) {
                 // cannot use modifiers - will make gif to static image
             }
         ),
-        modifier = Modifier.size(128.dp),
+        modifier = Modifier
+            .size(128.dp)
+            .semantics { contentDescription = "Cat" }
+            .testTag(if (cat.url.endsWith(".gif")) "gif" else "other"),
         contentDescription = null // TODO: we can fetch something interesting about the image
     )
 }
