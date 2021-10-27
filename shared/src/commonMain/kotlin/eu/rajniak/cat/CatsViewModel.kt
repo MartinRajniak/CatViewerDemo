@@ -9,44 +9,16 @@ import eu.rajniak.cat.utils.SharedViewModel
 import eu.rajniak.cat.utils.asCommonFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class CatsViewModel(
     private val catsStore: CatsStore = CatViewerServiceLocator.catsStore
 ) : SharedViewModel() {
-    // TODO: persist to survive restart
-    private val _disabledCategories = MutableStateFlow(emptySet<Int>())
 
-    // TODO: repository should return model classes already
-    private val _categories = catsStore.categories
-    val categories: CommonFlow<List<CategoryModel>> =
-        _categories.combine(_disabledCategories) { categories, disabledCategories ->
-            categories.map { category ->
-                CategoryModel(
-                    id = category.id,
-                    name = category.name,
-                    enabled = !disabledCategories.contains(category.id)
-                )
-            }
-        }.asCommonFlow()
+    val categories: CommonFlow<List<CategoryModel>> = catsStore.categories.asCommonFlow()
 
-    // TODO: persist to survive restart
-    private val _disabledMimeTypes = MutableStateFlow(emptySet<Int>())
-
-    // TODO: repository should return model classes already
-    private val _mimeTypes = catsStore.mimeTypes
-    val mimeTypes: CommonFlow<List<MimeTypeModel>> =
-        _mimeTypes.combine(_disabledMimeTypes) { mimeTypes, disabledMimeTypes ->
-            mimeTypes.map { mimeType ->
-                MimeTypeModel(
-                    id = mimeType.id,
-                    name = mimeType.name,
-                    enabled = !disabledMimeTypes.contains(mimeType.id)
-                )
-            }
-        }.asCommonFlow()
+    val mimeTypes: CommonFlow<List<MimeTypeModel>> = catsStore.mimeTypes.asCommonFlow()
 
     private val _cats = catsStore.cats
     val cats: CommonFlow<List<Cat>> =
@@ -82,21 +54,11 @@ class CatsViewModel(
     }
 
     fun onCategoryChecked(categoryId: Int, checked: Boolean) {
-        val oldSelection = _disabledCategories.value
-        _disabledCategories.value = if (checked) {
-            oldSelection.minus(categoryId)
-        } else {
-            oldSelection.plus(categoryId)
-        }
+        catsStore.changeCategoryState(categoryId, checked)
     }
 
     fun onMimeTypeChecked(mimeTypeId: Int, checked: Boolean) {
-        val oldSelection = _disabledMimeTypes.value
-        _disabledMimeTypes.value = if (checked) {
-            oldSelection.minus(mimeTypeId)
-        } else {
-            oldSelection.plus(mimeTypeId)
-        }
+        catsStore.changeMimeTypeState(mimeTypeId, checked)
     }
 
     // TODO: use multiplatform paging library instead (https://github.com/kuuuurt/multiplatform-paging)

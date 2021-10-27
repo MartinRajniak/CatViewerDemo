@@ -11,7 +11,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-// TODO: switch to JAssert and JUnit for testing
+// TODO: switch to AssertJ and JUnit for testing
 //  this doesn't provide useful info
 class CatsTest {
 
