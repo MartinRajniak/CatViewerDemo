@@ -2,8 +2,10 @@ package eu.rajniak.cat
 
 import com.russhwolf.settings.coroutines.FlowSettings
 import eu.rajniak.cat.utils.settings
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -40,6 +42,19 @@ class SettingsStorageImpl(
                 if (it == null) return@map emptySet<Int>()
                 Json.decodeFromString(it)
             }
+
+    init {
+        // TODO: just for exercise - remove afterwards
+        // Assignment requirement - filter out hats
+        GlobalScope.launch {
+            if (settings.hasKey(SETTINGS_DISABLED_CATEGORIES)) {
+                // Already set
+                return@launch
+            }
+            val hatsCategoryId = 1
+            changeCategoryState(hatsCategoryId, false)
+        }
+    }
 
     override suspend fun changeCategoryState(categoryId: Int, enabled: Boolean) {
         val disabledCategoriesSerialized = settings.getStringOrNull(SETTINGS_DISABLED_CATEGORIES)
