@@ -5,6 +5,7 @@ import eu.rajniak.cat.data.Category
 import eu.rajniak.cat.data.MimeType
 import eu.rajniak.cat.data.MimeTypesSource
 import eu.rajniak.cat.data.MimeTypesSourceImpl
+import eu.rajniak.cat.utils.AtomicInt
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -29,16 +30,16 @@ class CatsStoreImpl(
     // so keeping it here in case they do :)
     override val mimeTypes = MutableStateFlow(mimeTypesSource.mimeTypes)
 
-    private var page = 1
+    private var page = AtomicInt(1)
 
     override suspend fun start() {
         categories.value = catsApi.fetchCategories()
-        cats.value = catsApi.fetchCats(page)
+        cats.value = catsApi.fetchCats(page.get())
     }
 
     override suspend fun fetchMoreData() {
         val oldList = cats.value
-        val newList = catsApi.fetchCats(++page)
+        val newList = catsApi.fetchCats(page.addAndGet(1))
         cats.value = listOf(oldList, newList).flatten()
     }
 }

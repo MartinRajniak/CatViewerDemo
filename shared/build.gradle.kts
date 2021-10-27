@@ -1,7 +1,5 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import java.util.Properties
-
 
 plugins {
     kotlin("multiplatform")
@@ -12,6 +10,8 @@ plugins {
 
 val lifecycleVersion by extra ("2.4.0-rc01")
 val coroutinesVersion by extra ("1.5.2-native-mt")
+// TODO: move to stable - keeping eap to be able to build for M1 simulators
+val ktorVersion by extra ("2.0.0-eap-257")
 
 kotlin {
     android()
@@ -30,8 +30,6 @@ kotlin {
         }
     }
 
-    val ktor_version = "1.6.4"
-
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -41,8 +39,9 @@ kotlin {
 
                 implementation("com.benasher44:uuid:0.3.1")
 
-                implementation("io.ktor:ktor-client-core:$ktor_version")
-                implementation("io.ktor:ktor-client-serialization:$ktor_version")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
             }
         }
         val commonTest by getting {
@@ -56,7 +55,7 @@ kotlin {
             dependencies {
                 implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 
-                implementation("io.ktor:ktor-client-android:$ktor_version")
+                implementation("io.ktor:ktor-client-android:$ktorVersion")
             }
         }
         val androidTest by getting {
@@ -67,7 +66,7 @@ kotlin {
         }
         val iosMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-ios:$ktor_version")
+                implementation("io.ktor:ktor-client-ios:$ktorVersion")
             }
         }
         val iosTest by getting

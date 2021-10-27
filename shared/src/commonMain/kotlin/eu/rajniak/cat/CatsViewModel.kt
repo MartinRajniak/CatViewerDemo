@@ -3,6 +3,7 @@ package eu.rajniak.cat
 import eu.rajniak.cat.data.Cat
 import eu.rajniak.cat.data.CategoryModel
 import eu.rajniak.cat.data.MimeTypeModel
+import eu.rajniak.cat.utils.AtomicReference
 import eu.rajniak.cat.utils.CommonFlow
 import eu.rajniak.cat.utils.SharedViewModel
 import eu.rajniak.cat.utils.asCommonFlow
@@ -69,7 +70,10 @@ class CatsViewModel(
             }
         }.asCommonFlow()
 
-    private var loadingJob: Job? = null
+    // TODO: using AtomicReference
+    //  because of issues with freezing state on iOS.
+    //  Try figure out what is wrong (should be one thread access).
+    private var loadingJob: AtomicReference<Job?> = AtomicReference(null)
 
     init {
         sharedScope.launch(context = Dispatchers.Default) {
@@ -97,11 +101,12 @@ class CatsViewModel(
 
     // TODO: use multiplatform paging library instead (https://github.com/kuuuurt/multiplatform-paging)
     fun onScrolledToTheEnd() {
-        if (loadingJob?.isActive == true) {
+        if (loadingJob.get()?.isActive == true) {
             return
         }
-        loadingJob = sharedScope.launch(context = Dispatchers.Default) {
+        val job = sharedScope.launch(context = Dispatchers.Default) {
             catsStore.fetchMoreData()
         }
+        loadingJob.set(job)
     }
 }
