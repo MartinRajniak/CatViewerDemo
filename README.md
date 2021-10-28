@@ -1,6 +1,9 @@
 # CatViewerDemo
-<img src="readme/android_demo.gif" alt="Android Demo" width="300" />
-<img src="readme/ios_demo.gif" alt="iOS Demo" width="300" />
+Android demo                                                          |  iOS demo
+:--------------------------------------------------------------------:|:-------------------------------------------------------------:
+<img src="readme/android_demo.gif" alt="Android Demo" width="300" />  |  <img src="readme/ios_demo.gif" alt="iOS Demo" width="300" />
+
+
 
 Kotlin Multiplatform Mobile demo for Android and iOS. 
 App for viewing Cat pictures from [Cats API](https://thecatapi.com).
