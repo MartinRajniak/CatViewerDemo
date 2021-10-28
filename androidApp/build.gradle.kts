@@ -34,6 +34,8 @@ dependencies {
     androidTestImplementation( "androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
+    androidTestImplementation("androidx.test:runner:1.4.1-alpha03")
+    androidTestUtil("androidx.test:orchestrator:1.4.1-alpha03")
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 }
@@ -48,6 +50,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments += mapOf(
+            "clearPackageData" to "true"
+        )
     }
     buildFeatures {
         compose = true
@@ -70,6 +75,7 @@ android {
     }
     testOptions {
         animationsDisabled = true
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
     packagingOptions {
         resources {

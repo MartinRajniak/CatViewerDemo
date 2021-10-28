@@ -14,7 +14,6 @@ import org.junit.Test
 
 // TODO: share hardcoded values so that we won't forget to change them
 //  on both places
-// TODO: flaky because mime type selection is persisted
 class CatTest {
 
     @get:Rule
@@ -30,6 +29,7 @@ class CatTest {
 
         // TODO: this is flaky because it might take longer than 5s to load
         //  and also we might get pictures without gifs
+        //  (running re-runs help with this)
         // Make sure there are some gif pictures loaded
         composeTestRule.waitForAssertion(5000) {
             composeTestRule
@@ -37,10 +37,8 @@ class CatTest {
                 .assertAny(hasTestTag("gif"))
         }
 
-        composeTestRule.waitForAssertion(5000) {
-            composeTestRule.onNode(hasTestTag("DropdownIconButton")).performClick()
-            composeTestRule.onNode(hasTestTag("1")).performClick()
-        }
+        composeTestRule.onNode(hasTestTag("DropdownIconButton")).performClick()
+        composeTestRule.onNode(hasTestTag("1")).performClick()
 
         // Make sure there no gifs anymore
         composeTestRule.waitForAssertion(5000) {
