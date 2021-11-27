@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    kotlin("plugin.serialization") version libs.versions.kotlin
+    kotlin("plugin.serialization")
     id("com.codingfeline.buildkonfig")
 }
 
