@@ -13,4 +13,6 @@ jobs:
        distribution: 'adopt'
        java-version: '11'
     - name: Build the project
+      env: # Or as an environment variable
+        catsApiKey: ${{ secrets.CATS_API_KEY }}
       run: ./gradlew assemble
