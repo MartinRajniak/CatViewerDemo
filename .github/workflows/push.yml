@@ -28,3 +28,9 @@ jobs:
           path: |
             androidApp/build/reports
             shared/build/reports
+
+      - name: Select Xcode
+        uses: devbotsxyz/xcode-select@v1
+
+      - name: Xcode build
+        run: xcodebuild -project "iosApp/iosApp.xcodeproj" -scheme iosApp -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 8'
