@@ -7,13 +7,15 @@ import eu.rajniak.cat.utils.AtomicReference
 import eu.rajniak.cat.utils.CommonFlow
 import eu.rajniak.cat.utils.SharedViewModel
 import eu.rajniak.cat.utils.asCommonFlow
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class CatsViewModel(
-    private val catsStore: CatsStore = CatViewerServiceLocator.catsStore
+    private val catsStore: CatsStore = CatViewerServiceLocator.catsStore,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : SharedViewModel() {
 
     val categories: CommonFlow<List<CategoryModel>> = catsStore.categories.asCommonFlow()
@@ -48,19 +50,19 @@ class CatsViewModel(
     private var loadingJob: AtomicReference<Job?> = AtomicReference(null)
 
     init {
-        sharedScope.launch(context = Dispatchers.Default) {
+        sharedScope.launch(context = dispatcher) {
             catsStore.start()
         }
     }
 
     fun onCategoryChecked(categoryId: Int, checked: Boolean) {
-        sharedScope.launch(context = Dispatchers.Default) {
+        sharedScope.launch(context = dispatcher) {
             catsStore.changeCategoryState(categoryId, checked)
         }
     }
 
     fun onMimeTypeChecked(mimeTypeId: Int, checked: Boolean) {
-        sharedScope.launch(context = Dispatchers.Default) {
+        sharedScope.launch(context = dispatcher) {
             catsStore.changeMimeTypeState(mimeTypeId, checked)
         }
     }
@@ -70,7 +72,7 @@ class CatsViewModel(
         if (loadingJob.get()?.isActive == true) {
             return
         }
-        val job = sharedScope.launch(context = Dispatchers.Default) {
+        val job = sharedScope.launch(context = dispatcher) {
             catsStore.fetchMoreData()
         }
         loadingJob.set(job)

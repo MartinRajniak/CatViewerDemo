@@ -97,7 +97,7 @@ buildkonfig {
         buildConfigField(
             type = STRING,
             name = "api_key",
-            value = findProperty("catsApiKey") as String
+            value = findProperty("catsApiKey") as? String ?: throw Exception("catsApiKey is not set")
         )
     }
 }

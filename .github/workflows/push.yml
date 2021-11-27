@@ -13,4 +13,4 @@ jobs:
        distribution: 'adopt'
        java-version: '11'
     - name: Build the project
-      run: ./gradlew assemble -PcatsApiKey=${{ secrets.CATS_API_KEY }}
+      run: ./gradlew assemble test -PcatsApiKey=${{ secrets.CATS_API_KEY }}

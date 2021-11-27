@@ -4,6 +4,7 @@ import eu.rajniak.cat.data.Cat
 import eu.rajniak.cat.data.Category
 import eu.rajniak.cat.data.MimeType
 import eu.rajniak.cat.data.MimeTypesSource
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlin.test.BeforeTest
@@ -62,26 +63,27 @@ class CatsTest {
                 catsApi = catsApi,
                 mimeTypesSource = mimeTypesSource,
                 settingsStorage = settingsStorage
-            )
+            ),
+            dispatcher = testCoroutineContext as CoroutineDispatcher
         )
     }
 
     @Test
     fun testCategorySelectionChange() = runBlockingTest {
-        assertTrue { viewModel.categories.first()[0].enabled }
+        assertTrue { viewModel.categories.first().first { it.id == CATEGORY_HAT.id }.enabled }
 
         viewModel.onCategoryChecked(CATEGORY_HAT.id, false)
 
-        assertFalse { viewModel.categories.first()[0].enabled }
+        assertFalse { viewModel.categories.first().first { it.id == CATEGORY_HAT.id }.enabled }
     }
 
     @Test
     fun testMimeTypeSelectionChange() = runBlockingTest {
-        assertTrue { viewModel.mimeTypes.first()[0].enabled }
+        assertTrue { viewModel.mimeTypes.first().first { it.id == MIME_TYPE_GIF.id }.enabled }
 
         viewModel.onMimeTypeChecked(MIME_TYPE_GIF.id, false)
 
-        assertFalse { viewModel.mimeTypes.first()[0].enabled }
+        assertFalse { viewModel.mimeTypes.first().first { it.id == MIME_TYPE_GIF.id }.enabled }
     }
 
     @Test
