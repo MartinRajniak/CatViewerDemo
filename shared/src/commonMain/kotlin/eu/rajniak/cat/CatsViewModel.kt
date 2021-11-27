@@ -8,7 +8,6 @@ import eu.rajniak.cat.utils.CommonFlow
 import eu.rajniak.cat.utils.SharedViewModel
 import eu.rajniak.cat.utils.asCommonFlow
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
