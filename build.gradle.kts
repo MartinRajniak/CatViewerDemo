@@ -1,5 +1,5 @@
 plugins {
-    id("com.diffplug.spotless") version "5.16.0"
+    id("com.diffplug.spotless") version "6.0.0"
 }
 
 buildscript {
@@ -10,7 +10,7 @@ buildscript {
     }
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
-        classpath("com.android.tools.build:gradle:7.1.0-beta01")
+        classpath("com.android.tools.build:gradle:7.1.0-beta04")
         classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.11.0")
     }
 }
@@ -33,7 +33,7 @@ subprojects {
             targetExclude("$buildDir/**/*.kt")
             targetExclude("bin/**/*.kt")
 
-            ktlint("0.42.1")
+            ktlint()
         }
     }
 }
