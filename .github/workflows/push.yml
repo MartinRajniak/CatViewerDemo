@@ -11,8 +11,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Copy CI gradle.properties
-        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+      - name: Set CI gradle.properties
+        env:
+          CATS_API_KEY: ${{ secrets.CATS_API_KEY }}
+        run: |
+          mkdir -p ~/.gradle
+          cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+          echo "\ncatsApiKey=${CATS_API_KEY}" >> ~/.gradle/gradle.properties
 
       - name: Setup Java JDK
         uses: actions/setup-java@v2.1.0
@@ -21,7 +26,7 @@ jobs:
          java-version: '11'
 
       - name: Build the project
-        run: ./gradlew build lint -PcatsApiKey=${{ secrets.CATS_API_KEY }} --stacktrace
+        run: ./gradlew build lint -PcatsApiKey= --stacktrace
 
       - name: Upload build reports
         if: always()
