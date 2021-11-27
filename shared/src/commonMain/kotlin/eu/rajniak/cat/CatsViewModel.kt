@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class CatsViewModel(
     private val catsStore: CatsStore = CatViewerServiceLocator.catsStore,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
+    private val dispatcher: CoroutineDispatcher = CatViewerServiceLocator.defaultDispatcher
 ) : SharedViewModel() {
 
     val categories: CommonFlow<List<CategoryModel>> = catsStore.categories.asCommonFlow()

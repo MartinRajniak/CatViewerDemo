@@ -3,7 +3,10 @@ import shared
 
 class CatsStore: ObservableObject {
     // FIXME: how to support empty constructor with default value (Like in Kotlin)
-    private let viewModel = CatsViewModel(catsStore: CatViewerServiceLocator.shared.catsStore)
+    private let viewModel = CatsViewModel(
+        catsStore: CatViewerServiceLocator.shared.catsStore,
+        dispatcher: CatViewerServiceLocator.shared.defaultDispatcher
+    )
     
     @Published var cats: [Cat] = []
     @Published var hasNextPage: Bool = false
