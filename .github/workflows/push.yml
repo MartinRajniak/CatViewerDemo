@@ -18,11 +18,13 @@ jobs:
          java-version: '11'
 
       - name: Build the project
-        run: ./gradlew build -PcatsApiKey=${{ secrets.CATS_API_KEY }} --stacktrace
+        run: ./gradlew build lint -PcatsApiKey=${{ secrets.CATS_API_KEY }} --stacktrace
 
       - name: Upload build reports
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: build-reports
-          path: /**/build/reports
+          path: |
+            androidApp/build/reports
+            shared/build/reports
