@@ -26,7 +26,7 @@ jobs:
          java-version: '11'
 
       - name: Build the project
-        run: ./gradlew build lint -PcatsApiKey= --stacktrace
+        run: ./gradlew build lint --stacktrace
 
       - name: Upload build reports
         if: always()
