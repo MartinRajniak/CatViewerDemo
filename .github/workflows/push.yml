@@ -41,4 +41,4 @@ jobs:
         uses: devbotsxyz/xcode-select@v1
 
       - name: Xcode build
-        run: xcodebuild -project "iosApp/iosApp.xcodeproj" -scheme iosApp -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 8'
+        run: xcodebuild -project "iosApp/iosApp.xcodeproj" -scheme iosApp test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 8'

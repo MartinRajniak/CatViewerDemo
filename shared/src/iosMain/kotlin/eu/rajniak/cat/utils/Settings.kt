@@ -6,4 +6,4 @@ import com.russhwolf.settings.coroutines.toFlowSettings
 import platform.Foundation.NSUserDefaults
 
 actual fun settings(): FlowSettings =
-    AppleSettings(NSUserDefaults.standardUserDefaults).toFlowSettings()
+    AppleSettings(NSUserDefaults.standardUserDefaults, true).toFlowSettings()
