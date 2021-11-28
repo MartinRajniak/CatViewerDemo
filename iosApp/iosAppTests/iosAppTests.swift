@@ -1,11 +1,3 @@
-//
-//  iosAppTests.swift
-//  iosAppTests
-//
-//  Created by Martin Rajniak on 27/11/2021.
-//  Copyright © 2021 orgName. All rights reserved.
-//
-
 import XCTest
 
 class iosAppTests: XCTestCase {
