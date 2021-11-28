@@ -1,4 +1,6 @@
 # CatViewerDemo
+![Check](https://github.com/MartinRajniak/CatViewerDemo/actions/workflows/push.yml/badge.svg)
+
 Android demo                                                          |  iOS demo
 :--------------------------------------------------------------------:|:-------------------------------------------------------------:
 <img src="readme/android_demo.gif" alt="Android Demo" width="300" />  |  <img src="readme/ios_demo.gif" alt="iOS Demo" width="300" />
