@@ -10,8 +10,7 @@ plugins {
 
 val lifecycleVersion by extra("2.4.0-rc01")
 val coroutinesVersion by extra("1.5.2-native-mt")
-// TODO: move to stable - keeping eap to be able to build for M1 simulators
-val ktorVersion by extra("2.0.0-eap-257")
+val ktorVersion by extra("2.0.0-beta-1")
 val settingsVersion by extra("0.8.1")
 
 kotlin {
