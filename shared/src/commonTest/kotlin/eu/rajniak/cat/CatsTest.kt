@@ -5,8 +5,13 @@ import eu.rajniak.cat.data.Category
 import eu.rajniak.cat.data.MimeType
 import eu.rajniak.cat.data.MimeTypesSource
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -15,6 +20,7 @@ import kotlin.test.assertTrue
 
 // TODO: switch to AssertJ and JUnit for testing
 //  this doesn't provide useful info
+@ExperimentalCoroutinesApi
 class CatsTest {
 
     companion object {
@@ -28,6 +34,8 @@ class CatsTest {
             name = "gif"
         )
     }
+
+    private lateinit var dispatcher: TestDispatcher
 
     private lateinit var catsApi: FakeCatsApi
     private lateinit var mimeTypesSource: FakeMimeTypesSource
@@ -58,18 +66,20 @@ class CatsTest {
 
         settingsStorage = FakeSettingsStorage()
 
+        dispatcher = StandardTestDispatcher()
+
         viewModel = CatsViewModel(
             catsStore = CatsStoreImpl(
                 catsApi = catsApi,
                 mimeTypesSource = mimeTypesSource,
                 settingsStorage = settingsStorage
             ),
-            dispatcher = testCoroutineContext as CoroutineDispatcher
+            dispatcher = dispatcher
         )
     }
 
     @Test
-    fun testCategorySelectionChange() = runBlockingTest {
+    fun testCategorySelectionChange() = runTest(dispatcher) {
         assertTrue { viewModel.categories.first().first { it.id == CATEGORY_HAT.id }.enabled }
 
         viewModel.onCategoryChecked(CATEGORY_HAT.id, false)
@@ -78,7 +88,7 @@ class CatsTest {
     }
 
     @Test
-    fun testMimeTypeSelectionChange() = runBlockingTest {
+    fun testMimeTypeSelectionChange() = runTest(dispatcher) {
         assertTrue { viewModel.mimeTypes.first().first { it.id == MIME_TYPE_GIF.id }.enabled }
 
         viewModel.onMimeTypeChecked(MIME_TYPE_GIF.id, false)
@@ -87,7 +97,7 @@ class CatsTest {
     }
 
     @Test
-    fun testCategoryCatFilter() = runBlockingTest {
+    fun testCategoryCatFilter() = runTest(dispatcher) {
         assertEquals(2, viewModel.cats.first().size)
 
         viewModel.onCategoryChecked(CATEGORY_HAT.id, false)
@@ -96,7 +106,7 @@ class CatsTest {
     }
 
     @Test
-    fun testMimeTypeCatFilter() = runBlockingTest {
+    fun testMimeTypeCatFilter() = runTest(dispatcher) {
         assertEquals(2, viewModel.cats.first().size)
 
         viewModel.onMimeTypeChecked(MIME_TYPE_GIF.id, false)
@@ -105,7 +115,7 @@ class CatsTest {
     }
 
     @Test
-    fun testPagination() = runBlockingTest {
+    fun testPagination() = runTest(dispatcher) {
         assertEquals(2, viewModel.cats.first().size)
 
         viewModel.onScrolledToTheEnd()
