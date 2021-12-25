@@ -25,6 +25,9 @@ jobs:
          distribution: 'adopt'
          java-version: '11'
 
+      - name: Select Xcode
+        uses: devbotsxyz/xcode-select@v1
+
       - name: Build the project
         run: ./gradlew build lint --stacktrace
 
@@ -36,9 +39,6 @@ jobs:
           path: |
             androidApp/build/reports
             shared/build/reports
-
-      - name: Select Xcode
-        uses: devbotsxyz/xcode-select@v1
 
       - name: Xcode build
         run: xcodebuild -project "iosApp/iosApp.xcodeproj" -scheme iosApp test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12'
