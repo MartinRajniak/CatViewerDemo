@@ -3,7 +3,7 @@ plugins {
     kotlin("android")
 }
 
-val composeVersion by extra ("1.0.4")
+val composeVersion by extra ("1.1.0-rc01")
 val coilVersion by extra ("1.4.0")
 
 dependencies {
@@ -62,7 +62,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = composeVersion
+        kotlinCompilerExtensionVersion = "1.1.0-rc02"
     }
     buildTypes {
         getByName("release") {
