@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
+    # not using macos-latest since it isn't latest at the moment ;) https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
     runs-on: macos-11
     timeout-minutes: 60
 
@@ -25,6 +26,7 @@ jobs:
          distribution: 'adopt'
          java-version: '11'
 
+      # Selecting 13.2.1 (13.1 is default) - https://github.com/actions/virtual-environments/blob/macOS-10.15/20211220.1/images/macos/macos-11-Readme.md 
       - name: Select Xcode
         uses: devbotsxyz/xcode-select@v1
 
