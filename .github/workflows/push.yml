@@ -1,10 +1,10 @@
 name: Check
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-11
     timeout-minutes: 60
 
     steps:
@@ -45,7 +45,7 @@ jobs:
 
   test:
     needs: build
-    runs-on: macos-latest # enables hardware acceleration in the virtual machine
+    runs-on: macos-11 # enables hardware acceleration in the virtual machine
     timeout-minutes: 60
     strategy:
       matrix:
