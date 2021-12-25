@@ -4,13 +4,11 @@ import eu.rajniak.cat.data.Cat
 import eu.rajniak.cat.data.Category
 import eu.rajniak.cat.data.MimeType
 import eu.rajniak.cat.data.MimeTypesSource
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
