@@ -9,7 +9,7 @@ plugins {
 }
 
 val lifecycleVersion by extra("2.4.0-rc01")
-val coroutinesVersion by extra("1.5.2-native-mt")
+val coroutinesVersion by extra("1.6.0")
 val ktorVersion by extra("2.0.0-beta-1")
 val settingsVersion by extra("0.8.1")
 
@@ -43,7 +43,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
-                implementation("com.russhwolf:multiplatform-settings-coroutines-native-mt:$settingsVersion")
+                implementation("com.russhwolf:multiplatform-settings-coroutines:$settingsVersion")
             }
         }
         val commonTest by getting {
