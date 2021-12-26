@@ -272,7 +272,13 @@ fun CatItem(cat: Cat) {
         modifier = Modifier
             .size(128.dp)
             .semantics { contentDescription = "Cat" }
-            .testTag(if (cat.url.endsWith(".gif")) "gif" else "other"),
+            .testTag(
+                when {
+                    cat.url.endsWith(".gif") -> "gif"
+                    cat.url.endsWith(".jpg") -> "jpg"
+                    else -> "other"
+                }
+            ),
         contentDescription = null // TODO: we can fetch something interesting about the image
     )
 }
