@@ -12,10 +12,11 @@ import eu.rajniak.cat.android.ui.theme.CatViewerDemoTheme
 import eu.rajniak.cat.android.viewer.CatsUI
 import org.junit.Rule
 import org.junit.Test
+import java.util.concurrent.TimeUnit
 
 // TODO: share hardcoded values so that we won't forget to change them
 //  on both places
-class CatTest {
+class CatsTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -32,7 +33,7 @@ class CatTest {
         //  and also we might get pictures without jpgs
         //  (running re-runs help with this)
         // Make sure there are some jpg pictures loaded
-        composeTestRule.waitForAssertion(5000) {
+        composeTestRule.waitForAssertion() {
             composeTestRule
                 .onAllNodesWithContentDescription("Cat")
                 .assertAny(hasTestTag("jpg"))
@@ -43,7 +44,7 @@ class CatTest {
         composeTestRule.onNode(hasTestTag("2")).performClick()
 
         // Make sure there no jpgs anymore
-        composeTestRule.waitForAssertion(5000) {
+        composeTestRule.waitForAssertion() {
             composeTestRule
                 .onAllNodesWithContentDescription("Cat")
                 .assertAll(!hasTestTag("jpg"))
@@ -51,7 +52,7 @@ class CatTest {
     }
 }
 
-fun ComposeTestRule.waitForAssertion(timeoutMillis: Long = 60_000L, assertion: () -> Unit) {
+fun ComposeTestRule.waitForAssertion(timeoutMillis: Long = TimeUnit.MINUTES.toMillis(1), assertion: () -> Unit) {
     waitUntil(timeoutMillis) {
         try {
             assertion.invoke()
