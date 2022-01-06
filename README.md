@@ -16,6 +16,7 @@ This sample showcases:
 * Shared state management with [Flow](https://kotlinlang.org/docs/flow.html)
 * Networking with [Ktor](https://ktor.io)
 * Persisting state with [Multiplatform Settings](https://github.com/russhwolf/multiplatform-settings)
+* Logging with [Kermit](https://github.com/touchlab/Kermit)
 * Android UI with [Jetpack Compose](https://developer.android.com/jetpack/compose)
 * iOS UI with [SwiftUI](https://developer.apple.com/xcode/swiftui/)
 * Android image (GIF) loading with [Coil](https://coil-kt.github.io/coil/)
@@ -144,6 +145,7 @@ It is hard to find any up-to-date resources, so every single one of them counts.
 Thanks to all the Kotlin Multiplatform libraries out there.
 I used:
 - [Multiplatform Settings](https://github.com/russhwolf/multiplatform-settings)
+- [Kermit](https://github.com/touchlab/Kermit)
 - [Kotlin Multiplatform UUID](https://github.com/benasher44/uuid/)
 - [BuildKonfig](https://github.com/yshrsmz/BuildKonfig)
 

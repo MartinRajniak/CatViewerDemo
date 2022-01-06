@@ -1,5 +1,6 @@
 package eu.rajniak.cat
 
+import co.touchlab.kermit.Logger
 import eu.rajniak.cat.data.Cat
 import eu.rajniak.cat.data.CategoryModel
 import eu.rajniak.cat.data.MimeTypeModel
@@ -68,6 +69,7 @@ class CatsViewModel(
 
     // TODO: use multiplatform paging library instead (https://github.com/kuuuurt/multiplatform-paging)
     fun onScrolledToTheEnd() {
+        Logger.withTag("CatsViewModel").i("onScrolledToTheEnd")
         if (loadingJob.get()?.isActive == true) {
             return
         }

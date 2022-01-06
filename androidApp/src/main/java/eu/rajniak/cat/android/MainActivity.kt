@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.core.view.WindowCompat
+import co.touchlab.kermit.Logger
 import com.google.accompanist.insets.ProvideWindowInsets
 import eu.rajniak.cat.CatsViewModel
 import eu.rajniak.cat.android.ui.theme.CatViewerDemoTheme
@@ -16,6 +17,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Logger.withTag("MainActivity").i("onCreate")
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 

@@ -15,6 +15,8 @@ class CatsStore: ObservableObject {
     @Published var mimeTypes: [MimeTypeModel] = []
     
     func start() {
+        LoggerKt.withTag(tag: "CatsStore").i {"start"}
+        
         viewModel.cats.watch { cats in
             guard let list = cats?.compactMap({ $0 as? Cat}) else {
                 return

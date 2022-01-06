@@ -1,4 +1,5 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
@@ -12,6 +13,7 @@ val lifecycleVersion by extra("2.4.0-rc01")
 val coroutinesVersion by extra("1.6.0")
 val ktorVersion by extra("2.0.0-beta-1")
 val settingsVersion by extra("0.8.1")
+val kermitVersion by extra("1.0.3")
 
 kotlin {
     android()
@@ -44,6 +46,9 @@ kotlin {
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
                 implementation("com.russhwolf:multiplatform-settings-coroutines:$settingsVersion")
+
+                // Using api to export Kermit to iOS
+                api("co.touchlab:kermit:$kermitVersion")
             }
         }
         val commonTest by getting {
@@ -79,6 +84,14 @@ kotlin {
             }
         }
         val iosTest by getting
+    }
+
+    // To make kermit available in iOS project - increases binary size because of the extra headers.
+    // More info: https://github.com/touchlab/Kermit/blob/main/samples/sample-swift-export/README.md
+    targets.withType<KotlinNativeTarget> {
+        binaries.withType<Framework> {
+            export("co.touchlab:kermit:$kermitVersion")
+        }
     }
 }
 

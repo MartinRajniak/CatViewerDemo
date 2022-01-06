@@ -1,5 +1,7 @@
 package eu.rajniak.cat
 
+import co.touchlab.kermit.ExperimentalKermitApi
+import co.touchlab.kermit.Logger
 import eu.rajniak.cat.data.Cat
 import eu.rajniak.cat.data.Category
 import eu.rajniak.cat.data.MimeType
@@ -18,6 +20,7 @@ import kotlin.test.assertTrue
 
 // TODO: switch to AssertJ and JUnit for testing
 //  this doesn't provide useful info
+@ExperimentalKermitApi
 @ExperimentalCoroutinesApi
 class CatsTest {
 
@@ -42,6 +45,9 @@ class CatsTest {
 
     @BeforeTest
     fun setUp() {
+        // Make sure in tests we do not log (e.g. on Android LogcatLogger is using system println)
+        Logger.setLogWriters(emptyList())
+
         catsApi = FakeCatsApi()
         catsApi.categories += CATEGORY_HAT
         catsApi.cats[1] = listOf(
