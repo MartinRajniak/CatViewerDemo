@@ -60,6 +60,8 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
 
                 implementation("com.russhwolf:multiplatform-settings-test:$settingsVersion")
+
+                implementation("co.touchlab:kermit-test:$kermitVersion")
             }
         }
         val androidMain by getting {

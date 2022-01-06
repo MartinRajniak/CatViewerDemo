@@ -1,7 +1,10 @@
 package eu.rajniak.cat
 
 import co.touchlab.kermit.ExperimentalKermitApi
+import co.touchlab.kermit.LogWriter
 import co.touchlab.kermit.Logger
+import co.touchlab.kermit.Severity
+import co.touchlab.kermit.TestLogWriter
 import eu.rajniak.cat.data.Cat
 import eu.rajniak.cat.data.Category
 import eu.rajniak.cat.data.MimeType
@@ -37,7 +40,7 @@ class CatsTest {
     }
 
     private lateinit var dispatcher: TestDispatcher
-
+    private lateinit var testLogWriter: TestLogWriter
     private lateinit var catsApi: FakeCatsApi
     private lateinit var mimeTypesSource: FakeMimeTypesSource
     private lateinit var settingsStorage: SettingsStorage
@@ -45,8 +48,10 @@ class CatsTest {
 
     @BeforeTest
     fun setUp() {
-        // Make sure in tests we do not log (e.g. on Android LogcatLogger is using system println)
-        Logger.setLogWriters(emptyList())
+        testLogWriter = TestLogWriter(loggable = Severity.Verbose)
+        // Make sure in tests we do use production logger
+        // (e.g. on Android LogcatLogger is using system println)
+        Logger.setLogWriters(testLogWriter)
 
         catsApi = FakeCatsApi()
         catsApi.categories += CATEGORY_HAT
@@ -125,6 +130,16 @@ class CatsTest {
         viewModel.onScrolledToTheEnd()
 
         assertEquals(3, viewModel.cats.first().size)
+    }
+
+    @Test
+    fun testPaginationLog() = runTest(dispatcher) {
+        testLogWriter.assertCount(0)
+
+        viewModel.onScrolledToTheEnd()
+
+        testLogWriter.assertCount(1)
+        testLogWriter.assertLast { message == "onScrolledToTheEnd" }
     }
 }
 
