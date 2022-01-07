@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 val composeVersion by extra ("1.1.0-rc01")
@@ -8,6 +10,11 @@ val coilVersion by extra ("1.4.0")
 
 dependencies {
     implementation(project(":shared"))
+
+    // Crash reporters
+    implementation (platform("com.google.firebase:firebase-bom:29.0.3"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
 
     // Coil
     implementation("io.coil-kt:coil-compose:$coilVersion")

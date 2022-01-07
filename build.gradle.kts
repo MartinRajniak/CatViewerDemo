@@ -16,6 +16,8 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-serialization:${kotlinVersion}")
         classpath("com.android.tools.build:gradle:7.0.4")
         classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.11.0")
+        classpath("com.google.gms:google-services:4.3.10")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.8.1")
     }
 }
 
