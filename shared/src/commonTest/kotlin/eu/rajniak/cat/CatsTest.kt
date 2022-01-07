@@ -1,7 +1,6 @@
 package eu.rajniak.cat
 
 import co.touchlab.kermit.ExperimentalKermitApi
-import co.touchlab.kermit.LogWriter
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.Severity
 import co.touchlab.kermit.TestLogWriter
