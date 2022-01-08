@@ -78,6 +78,13 @@ jobs:
         with:
           java-version: 11
 
+      - name: Setup Google Services for Firebase
+        shell: bash
+        env:
+          ANDROID_GOOGLE_SERVICES: ${{ secrets.ANDROID_GOOGLE_SERVICES }}
+        run: |
+          echo $ANDROID_GOOGLE_SERVICES | base64 --decode > androidApp/google-services.json
+
       - name: Run instrumentation tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
