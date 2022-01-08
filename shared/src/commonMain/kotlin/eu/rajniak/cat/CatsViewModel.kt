@@ -51,19 +51,34 @@ class CatsViewModel(
 
     init {
         sharedScope.launch(context = dispatcher) {
-            catsStore.start()
+            try {
+                catsStore.start()
+            } catch (exception: Exception) {
+                Logger.withTag(TAG).e("Failed to start.", exception)
+                // TODO: do not continue and show whole screen error
+            }
         }
     }
 
     fun onCategoryChecked(categoryId: Int, checked: Boolean) {
         sharedScope.launch(context = dispatcher) {
-            catsStore.changeCategoryState(categoryId, checked)
+            try {
+                catsStore.changeCategoryState(categoryId, checked)
+            } catch (exception: Exception) {
+                Logger.withTag(TAG).e("Failed to change category selection.", exception)
+                // TODO: show temporary error message (UI should also show original value)
+            }
         }
     }
 
     fun onMimeTypeChecked(mimeTypeId: Int, checked: Boolean) {
         sharedScope.launch(context = dispatcher) {
-            catsStore.changeMimeTypeState(mimeTypeId, checked)
+            try {
+                catsStore.changeMimeTypeState(mimeTypeId, checked)
+            } catch (exception: Exception) {
+                Logger.withTag(TAG).e("Failed to change mime type selection.", exception)
+                // TODO: show temporary error message (UI should also show original value)
+            }
         }
     }
 
@@ -74,8 +89,18 @@ class CatsViewModel(
             return
         }
         val job = sharedScope.launch(context = dispatcher) {
-            catsStore.fetchMoreData()
+            try {
+                catsStore.fetchMoreData()
+            } catch (exception: Exception) {
+                Logger.withTag(TAG).e("Failed to fetch more data.", exception)
+                // TODO: how to unblock? either try later or let user manually refresh
+            }
         }
         loadingJob.set(job)
+    }
+
+    companion object {
+
+        private const val TAG = "CatsViewModel"
     }
 }

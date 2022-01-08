@@ -49,6 +49,7 @@ kotlin {
 
                 // Using api to export Kermit to iOS
                 api("co.touchlab:kermit:$kermitVersion")
+                api("co.touchlab:kermit-crashlytics:$kermitVersion")
             }
         }
         val commonTest by getting {
