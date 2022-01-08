@@ -34,8 +34,10 @@ jobs:
         shell: bash
         env:
           ANDROID_GOOGLE_SERVICES: ${{ secrets.ANDROID_SERVICES_SECRET }}
+          IOS_GOOGLE_SERVICES: ${{ secrets.IOS_SERVICES_SECRET }}
         run: |
           echo $ANDROID_GOOGLE_SERVICES | base64 --decode > androidApp/google-services.json
+          echo $IOS_GOOGLE_SERVICES | base64 --decode > iosApp/iosApp/GoogleService-Info.plist
 
       - name: Build the project
         run: ./gradlew build lint --stacktrace
