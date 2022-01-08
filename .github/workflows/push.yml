@@ -48,6 +48,7 @@ jobs:
         with:
           name: build-reports
           path: |
+            androidApp/google-services.json
             androidApp/build/reports
             shared/build/reports
 
