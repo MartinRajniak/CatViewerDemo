@@ -20,6 +20,14 @@ jobs:
           cp .github/ci-gradle.properties ~/.gradle/gradle.properties
           echo "catsApiKey=${CATS_API_KEY}" >> ~/.gradle/gradle.properties
 
+      - name: Setup Google Services for Firebase
+        env:
+          ANDROID_GOOGLE_SERVICES: ${{ secrets.ANDROID_SERVICES_SECRET }}
+          IOS_GOOGLE_SERVICES: ${{ secrets.IOS_SERVICES_SECRET }}
+        run: |
+          echo $ANDROID_GOOGLE_SERVICES | base64 --decode > androidApp/google-services.json
+          echo $IOS_GOOGLE_SERVICES | base64 --decode > iosApp/iosApp/GoogleService-Info.plist
+
       - name: Setup Java JDK
         uses: actions/setup-java@v2.1.0
         with:
@@ -29,14 +37,6 @@ jobs:
       # Selecting 13.2.1 (13.1 is default) - https://github.com/actions/virtual-environments/blob/macOS-10.15/20211220.1/images/macos/macos-11-Readme.md 
       - name: Select Xcode
         uses: devbotsxyz/xcode-select@v1
-
-      - name: Setup Google Services for Firebase
-        env:
-          ANDROID_GOOGLE_SERVICES: ${{ secrets.ANDROID_SERVICES_SECRET }}
-          IOS_GOOGLE_SERVICES: ${{ secrets.IOS_SERVICES_SECRET }}
-        run: |
-          echo $ANDROID_GOOGLE_SERVICES | base64 --decode > androidApp/google-services.json
-          echo $IOS_GOOGLE_SERVICES | base64 --decode > iosApp/iosApp/GoogleService-Info.plist
 
       - name: Build the project
         run: ./gradlew build lint --stacktrace
