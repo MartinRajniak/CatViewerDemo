@@ -22,7 +22,7 @@ jobs:
 
       - name: Setup Google Services for Firebase
         env:
-          ANDROID_GOOGLE_SERVICES: ${{ secrets.ANDROID_SERVICES_SECRET }}
+          ANDROID_GOOGLE_SERVICES: ${{ secrets.ANDROID_GOOGLE_SERVICES }}
           IOS_GOOGLE_SERVICES: ${{ secrets.IOS_SERVICES_SECRET }}
         run: |
           echo $ANDROID_GOOGLE_SERVICES | base64 --decode > androidApp/google-services.json
