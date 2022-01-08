@@ -31,7 +31,6 @@ jobs:
         uses: devbotsxyz/xcode-select@v1
 
       - name: Setup Google Services for Firebase
-        shell: bash
         env:
           ANDROID_GOOGLE_SERVICES: ${{ secrets.ANDROID_SERVICES_SECRET }}
           IOS_GOOGLE_SERVICES: ${{ secrets.IOS_SERVICES_SECRET }}
@@ -48,7 +47,6 @@ jobs:
         with:
           name: build-reports
           path: |
-            androidApp/google-services.json
             androidApp/build/reports
             shared/build/reports
 
