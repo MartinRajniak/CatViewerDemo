@@ -6,6 +6,7 @@ jobs:
   build:
     # not using macos-latest since it isn't latest at the moment ;) https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
     runs-on: macos-11
+    environment: common
     timeout-minutes: 60
 
     steps:
@@ -23,7 +24,7 @@ jobs:
       - name: Setup Google Services for Firebase
         env:
           ANDROID_GOOGLE_SERVICES: ${{ secrets.ANDROID_GOOGLE_SERVICES }}
-          IOS_GOOGLE_SERVICES: ${{ secrets.IOS_SERVICES_SECRET }}
+          IOS_GOOGLE_SERVICES: ${{ secrets.IOS_GOOGLE_SERVICES }}
         run: |
           echo $ANDROID_GOOGLE_SERVICES | base64 --decode > androidApp/google-services.json
           echo $IOS_GOOGLE_SERVICES | base64 --decode > iosApp/iosApp/GoogleService-Info.plist
@@ -56,6 +57,7 @@ jobs:
   test:
     needs: build
     runs-on: macos-11 # enables hardware acceleration in the virtual machine
+    environment: common
     timeout-minutes: 60
     strategy:
       matrix:
