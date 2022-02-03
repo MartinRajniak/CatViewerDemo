@@ -1,6 +1,5 @@
 [versions]
-androidx-compose-material = "1.1.0-rc03"
-androidx-compose-ui = "1.1.0-rc03"
+androidx-compose = "1.1.0-rc03"
 androidx-test = "1.4.1-alpha03"
 coil = "1.4.0"
 kermit = "1.0.3"
@@ -14,13 +13,13 @@ accompanist-insets-ui = "com.google.accompanist:accompanist-insets-ui:0.22.1-rc"
 android-build-plugin = "com.android.tools.build:gradle:7.1.0"
 androidx-activity-compose = "androidx.activity:activity-compose:1.4.0"
 androidx-compose-foundation = "androidx.compose.foundation:foundation:1.1.0-rc03"
-androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidx-compose-material" }
-androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "androidx-compose-material" }
-androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidx-compose-material" }
-androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidx-compose-ui" }
-androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-compose-ui" }
-androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-compose-ui" }
-androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose-ui" }
+androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidx-compose" }
+androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "androidx-compose" }
+androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidx-compose" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidx-compose" }
+androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-compose" }
+androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-compose" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose" }
 androidx-datastore-preferences = "androidx.datastore:datastore-preferences:1.0.0"
 androidx-lifecycle-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
 androidx-startup-runtime = "androidx.startup:startup-runtime:1.1.0"
