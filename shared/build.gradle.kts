@@ -9,12 +9,6 @@ plugins {
     id("com.codingfeline.buildkonfig")
 }
 
-val lifecycleVersion by extra("2.4.0-rc01")
-val coroutinesVersion by extra("1.6.0")
-val ktorVersion by extra("2.0.0-beta-1")
-val settingsVersion by extra("0.8.1")
-val kermitVersion by extra("1.0.3")
-
 kotlin {
     android()
 
@@ -35,55 +29,53 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion") {
-                    isForce = true
-                }
+                implementation(libs.kotlinx.coroutines.core)
 
-                implementation("com.benasher44:uuid:0.3.1")
+                implementation(libs.uuid)
 
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.serialization.kotlinx.json)
 
-                implementation("com.russhwolf:multiplatform-settings-coroutines:$settingsVersion")
+                implementation(libs.multiplatform.settings.coroutines)
 
                 // Using api to export Kermit to iOS
-                api("co.touchlab:kermit:$kermitVersion")
-                api("co.touchlab:kermit-crashlytics:$kermitVersion")
+                api(libs.kermit)
+                api(libs.kermit.crashlytics)
             }
         }
         val commonTest by getting {
             dependencies {
                 // TODO: might want to use JUnit with AssertJ instead (https://stackoverflow.com/a/63427057)
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation(libs.kotlin.test.common)
+                implementation(libs.kotlin.test.annotations.common)
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
+                implementation(libs.kotlinx.coroutines.test)
 
-                implementation("com.russhwolf:multiplatform-settings-test:$settingsVersion")
+                implementation(libs.multiplatform.settings.test)
 
-                implementation("co.touchlab:kermit-test:$kermitVersion")
+                implementation(libs.kermit.test)
             }
         }
         val androidMain by getting {
             dependencies {
-                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+                implementation(libs.androidx.lifecycle.viewmodel)
 
-                implementation("io.ktor:ktor-client-android:$ktorVersion")
+                implementation(libs.ktor.client.android)
 
-                implementation("androidx.datastore:datastore-preferences:1.0.0")
-                implementation("androidx.startup:startup-runtime:1.1.0")
+                implementation(libs.androidx.datastore.preferences)
+                implementation(libs.androidx.startup.runtime)
             }
         }
         val androidTest by getting {
             dependencies {
-                implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13.2")
+                implementation(libs.kotlin.test.junit)
+                implementation(libs.junit)
             }
         }
         val iosMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-ios:$ktorVersion")
+                implementation(libs.ktor.client.ios)
             }
         }
         val iosTest by getting
@@ -93,7 +85,7 @@ kotlin {
     // More info: https://github.com/touchlab/Kermit/blob/main/samples/sample-swift-export/README.md
     targets.withType<KotlinNativeTarget> {
         binaries.withType<Framework> {
-            export("co.touchlab:kermit:$kermitVersion")
+            export(libs.kermit)
         }
     }
 }

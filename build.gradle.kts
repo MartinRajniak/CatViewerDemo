@@ -1,5 +1,7 @@
 plugins {
-    id("com.diffplug.spotless") version "6.0.0"
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.versions)
+    alias(libs.plugins.version.catalog.update)
 }
 
 buildscript {
@@ -12,12 +14,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:${kotlinVersion}")
-        classpath("com.android.tools.build:gradle:7.0.4")
-        classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.11.0")
-        classpath("com.google.gms:google-services:4.3.10")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:2.8.1")
+        classpath(libs.kotlin.plugin)
+        classpath(libs.kotlin.serialization.plugin)
+        classpath(libs.android.build.plugin)
+        classpath(libs.buildkonfig.plugin)
+        classpath(libs.google.services.plugin)
+        classpath(libs.firebase.crashlytics.plugin)
     }
 }
 

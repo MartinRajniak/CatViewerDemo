@@ -5,42 +5,39 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
-val composeVersion by extra ("1.1.0-rc01")
-val coilVersion by extra ("1.4.0")
-
 dependencies {
     implementation(project(":shared"))
 
-    // Crash reporters
-    implementation (platform("com.google.firebase:firebase-bom:29.0.3"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    // Firebase
+    implementation (platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 
     // Coil
-    implementation("io.coil-kt:coil-compose:$coilVersion")
-    implementation("io.coil-kt:coil-gif:$coilVersion")
+    implementation(libs.coil.compose)
+    implementation(libs.coil.gif)
 
     // Accompanist
-    implementation("com.google.accompanist:accompanist-insets-ui:0.19.0")
+    implementation(libs.accompanist.insets.ui)
 
     // Compose
-    implementation("androidx.activity:activity-compose:1.3.1")
+    implementation(libs.androidx.activity.compose)
 
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.ui:ui-tooling:$composeVersion")
-    implementation("androidx.compose.foundation:foundation:$composeVersion")
-    implementation("androidx.compose.material:material:$composeVersion")
-    implementation("androidx.compose.material:material-icons-core:$composeVersion")
-    implementation("androidx.compose.material:material-icons-extended:$composeVersion")
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.androidx.compose.material.icons.extended )
 
     // UI Tests
-    androidTestImplementation( "androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
-    androidTestImplementation("androidx.test:runner:1.4.1-alpha03")
-    androidTestUtil("androidx.test:orchestrator:1.4.1-alpha03")
-    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
+    androidTestImplementation( libs.androidx.test.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestUtil(libs.androidx.test.orchestrator)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
 
 android {
@@ -69,7 +66,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.0-rc02"
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
     buildTypes {
         getByName("release") {
