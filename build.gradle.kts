@@ -1,3 +1,5 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+
 plugins {
     alias(libs.plugins.spotless)
     alias(libs.plugins.versions)
@@ -39,6 +41,29 @@ subprojects {
             targetExclude("bin/**/*.kt")
 
             ktlint()
+        }
+    }
+}
+
+fun isNonStable(version: String) = listOf(
+    "alpha", "beta", // Firebase, Avast
+    "-M" // JUnit Jupiter
+).any { version.contains(it) }
+
+// Add here dependencies that cannot be updated at the moment
+fun cannotUpdate(module: String) = emptyList<String>().any { module.contains(it) }
+
+tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
+    resolutionStrategy {
+        componentSelection {
+            all {
+                if (cannotUpdate(candidate.module)) {
+                    reject("Ignore because we cannot update at the moment.")
+                }
+                if (isNonStable(candidate.version) && !isNonStable(currentVersion)) {
+                    reject("Ignore because version is not stable")
+                }
+            }
         }
     }
 }

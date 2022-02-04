@@ -35,6 +35,11 @@ You can provide it through `gradle.properties`, for example.
 You should follow [KMM setup](https://kotlinlang.org/docs/kmm-setup.html) 
 to build the application, both for Android and iOS.
 
+### Dependency updates
+To keep dependencies updated [Version Catalog Update Plugin](https://github.com/littlerobots/version-catalog-update-plugin) is used.
+
+All you need to do is to run `./gradlew versionCatalogUpdate`.
+
 ## Overview
 The goal of the exercise was to build Kotlin Multiplatform Mobile applications for Android and iOS,
 with only UI written in platform-specific code (ComposeUI and SwiftUI).
