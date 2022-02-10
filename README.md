@@ -35,6 +35,22 @@ You can provide it through `gradle.properties`, for example.
 You should follow [KMM setup](https://kotlinlang.org/docs/kmm-setup.html) 
 to build the application, both for Android and iOS.
 
+### Google Services 
+Google Services configuration file is required for Crashlytics, which the app uses to report issues to the authors.
+If you want to build and run the app, you need to create your own Firebase project:
+
+1. Create a project on [Firebase console](https://console.firebase.google.com/).
+2. Add applications using the package name `eu.rajniak.cat.android` for Android and `eu.rajniak.cat.iosApp` for iOS.
+3. Follow the instructions and download the configuration file to the appropriate folder.
+   Refer to [setup Android](https://firebase.google.com/docs/android/setup) or [setup iOS](https://firebase.google.com/docs/ios/setup) for further details.
+4. Enable Crashlytics on the Firebase console.
+
+In case you don't want to create a new Firebase project,
+you can still build applications with [dummy configuration files](config/dummy).
+Keep in mind that applications with this config will not run.
+
+This guide is inspired by [code-with-the-italians/bundel](https://github.com/code-with-the-italians/bundel/blob/main/CONTRIBUTING.md).
+
 ### Dependency updates
 To keep dependencies updated [Version Catalog Update Plugin](https://github.com/littlerobots/version-catalog-update-plugin) is used.
 

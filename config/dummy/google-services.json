@@ -7,28 +7,35 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "0:0000000000000:android:0000000000000000000000",
+        "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
         "android_client_info": {
           "package_name": "eu.rajniak.cat.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "0000000000000-00000000000000000000000000000000.apps.googleusercontent.com",
+          "client_id": "000000000000-00000000000000000000000000000000.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "00000000000000000000000000000-000000000"
+          "current_key": "000000000000000000000000000000000000000",
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "0000000000000-00000000000000000000000000000000.apps.googleusercontent.com",
+              "client_id": "000000000000-00000000000000000000000000000000.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "000000000000-00000000000000000000000000000000.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "eu.rajniak.cat.iosApp"
+              }
             }
           ]
         }
