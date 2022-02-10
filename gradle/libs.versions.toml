@@ -1,5 +1,6 @@
 [versions]
-androidx-compose = "1.1.0-rc03"
+android-plugin = "7.1.1"
+androidx-compose = "1.1.0"
 androidx-test = "1.4.1-alpha03"
 coil = "1.4.0"
 kermit = "1.0.3"
@@ -9,10 +10,9 @@ ktor = "2.0.0-beta-1"
 multiplatform-settings = "0.8.1"
 
 [libraries]
-accompanist-insets-ui = "com.google.accompanist:accompanist-insets-ui:0.22.1-rc"
-android-build-plugin = "com.android.tools.build:gradle:7.1.0"
+accompanist-insets-ui = "com.google.accompanist:accompanist-insets-ui:0.23.0"
 androidx-activity-compose = "androidx.activity:activity-compose:1.4.0"
-androidx-compose-foundation = "androidx.compose.foundation:foundation:1.1.0-rc03"
+androidx-compose-foundation = "androidx.compose.foundation:foundation:1.1.0"
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidx-compose" }
 androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "androidx-compose" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidx-compose" }
@@ -21,25 +21,21 @@ androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-compose" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose" }
 androidx-datastore-preferences = "androidx.datastore:datastore-preferences:1.0.0"
-androidx-lifecycle-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
-androidx-startup-runtime = "androidx.startup:startup-runtime:1.1.0"
+androidx-lifecycle-viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+androidx-startup-runtime = "androidx.startup:startup-runtime:1.1.1"
 androidx-test-espresso-core = "androidx.test.espresso:espresso-core:3.4.0"
 androidx-test-junit = "androidx.test.ext:junit:1.1.3"
 androidx-test-orchestrator = { module = "androidx.test:orchestrator", version.ref = "androidx-test" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test" }
-buildkonfig-plugin = "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.11.0"
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "coil" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-bom = "com.google.firebase:firebase-bom:29.0.4"
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
-firebase-crashlytics-plugin = "com.google.firebase:firebase-crashlytics-gradle:2.8.1"
-google-services-plugin = "com.google.gms:google-services:4.3.10"
 junit = "junit:junit:4.13.2"
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 kermit-crashlytics = { module = "co.touchlab:kermit-crashlytics", version.ref = "kermit" }
 kermit-test = { module = "co.touchlab:kermit-test", version.ref = "kermit" }
-kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-serialization-plugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 kotlin-test-annotations-common = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
 kotlin-test-common = { module = "org.jetbrains.kotlin:kotlin-test-common", version.ref = "kotlin" }
@@ -56,6 +52,14 @@ multiplatform-settings-test = { module = "com.russhwolf:multiplatform-settings-t
 uuid = "com.benasher44:uuid:0.4.0"
 
 [plugins]
-spotless = "com.diffplug.spotless:6.2.1"
+android-application = { id = "com.android.application", version.ref = "android-plugin" }
+android-library = { id = "com.android.library", version.ref = "android-plugin" }
+buildkonfig = "com.codingfeline.buildkonfig:0.11.0"
+firebase-crashlytics = "com.google.firebase.crashlytics:2.8.1"
+google-services = "com.google.gms.google-services:4.3.10"
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+spotless = "com.diffplug.spotless:6.2.2"
 version-catalog-update = "nl.littlerobots.version-catalog-update:0.3.0"
-versions = "com.github.ben-manes.versions:0.41.0"
+versions = "com.github.ben-manes.versions:0.42.0"

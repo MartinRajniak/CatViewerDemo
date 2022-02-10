@@ -7,21 +7,10 @@ plugins {
 }
 
 buildscript {
-    val kotlinVersion: String by project
-    println("Using Kotlin Version: $kotlinVersion")
-
     repositories {
         gradlePluginPortal()
         google()
         mavenCentral()
-    }
-    dependencies {
-        classpath(libs.kotlin.plugin)
-        classpath(libs.kotlin.serialization.plugin)
-        classpath(libs.android.build.plugin)
-        classpath(libs.buildkonfig.plugin)
-        classpath(libs.google.services.plugin)
-        classpath(libs.firebase.crashlytics.plugin)
     }
 }
 
