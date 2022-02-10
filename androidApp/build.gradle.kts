@@ -1,12 +1,12 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.kotlin.android)
 }
 
 dependencies {
-    implementation(project(":shared"))
+    implementation(projects.shared)
 
     // Firebase
     implementation (platform(libs.firebase.bom))
